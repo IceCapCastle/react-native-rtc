@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+
+def DEFAULT_COMPILE_SDK_VERSION = 28
+def DEFAULT_TARGET_SDK_VERSION = 28
+
+android {
+    compileSdkVersion project.hasProperty('compileSdkVersion') ? project.compileSdkVersion : DEFAULT_COMPILE_SDK_VERSION
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion project.hasProperty('targetSdkVersion') ? project.targetSdkVersion : DEFAULT_TARGET_SDK_VERSION
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.facebook.react:react-native:+'
+}
