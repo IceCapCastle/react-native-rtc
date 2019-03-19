@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.arthas.rtc.LogUtil;
-import com.arthas.rtc.UidConfig;
+import com.arthas.rtc.RtcConfig;
 import com.arthas.rtc.User;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -28,7 +28,7 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
 
     private Promise leaveRoomCallback; // 退出房间回调
     List<User> users = new ArrayList<>(); // 用户集合
-    List<UidConfig> configs = new ArrayList<>(); // 音视频view代理集合
+    List<RtcConfig> configs = new ArrayList<>(); // rtc配置集合
 
     public RCTBaseModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -59,7 +59,7 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
         super.onCatalystInstanceDestroy();
     }
 
-    private String logPath() {
+    protected final String logPath() {
         return LogUtil.getLogRootFile(mContext, getLogFileDir()).getAbsolutePath();
     }
 
@@ -76,12 +76,11 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
     }
 
     protected final void _initSDK(boolean isTest) {
-        if (sdk != null) {
-            _releaseSDK();
-        }
+        _releaseSDK();
         logD("initSDK isTest %b", isTest);
         sdk = createSDK(isTest);
         setupSDK();
+        setVideoResolution(320, 240);
     }
 
     protected final void _join(String token, String roomId, int userId) {
@@ -89,7 +88,7 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
         mUid = userId;
         logD("join token %s roomId %s uid %d", token, mRoomId, mUid);
         if (sdk != null) {
-            joinRoom(token, mRoomId, userId);
+            joinRoom(token);
         }
     }
 
@@ -120,14 +119,22 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
     /**
      * 追加远端用户
      *
-     * @param user 用户
+     * @param u 用户
      */
-    protected final void addRemoteUser(User user) {
-        logD("addRemoteUser uid %d", user.userId);
-        if (!users.contains(user)) { // 用户不存在
-            users.add(user); // 追加用户
-            connectVideo(user.userId); // 连接用户
+    protected final void addRemoteUser(User u) {
+        logD("addRemoteUser uid %d sid %s", u.userId, u.streamId);
+        for (User user : users) {
+            if (user.userId == u.userId) { // 用户存在
+                if (user.streamId != null && user.streamId.equals(u.streamId)) { // 流存在则return
+                    return;
+                } else { // 流不存在则删除
+                    users.remove(user);
+                    break;
+                }
+            }
         }
+        users.add(u); // 追加用户
+        connectVideo(u.userId); // 连接用户
     }
 
     /**
@@ -137,14 +144,14 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
      */
     protected final void connectVideo(int uid) {
         logD("connectVideo uid %d", uid);
-        for (UidConfig config : configs) {
+        for (RtcConfig config : configs) {
             if (uid == mUid) {
                 // 如果是自己，找到对应的view直接连接
                 if (config.uid == mUid) {
                     config.onUidChanged(uid);
                     break;
                 }
-            } else if (config.uid == UidConfig.UID_DEFAULT) {
+            } else if (config.uid == RtcConfig.UID_DEFAULT) {
                 // 如果不是自己，找到没有连接过的view连接
                 config.onUidChanged(uid);
                 break;
@@ -155,13 +162,13 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
     /**
      * 移除远端用户
      *
-     * @param user 用户
+     * @param u 用户
      */
-    protected final void removeRemoteUser(User user) {
-        logD("removeRemoteUser uid %d", user.userId);
-        users.remove(user); // 移除用户
-        for (UidConfig config : configs) {
-            if (config.uid == user.userId) {
+    protected final void removeRemoteUser(User u) {
+        logD("removeRemoteUser uid %d sid %s", u.userId, u.streamId);
+        users.remove(u); // 移除用户
+        for (RtcConfig config : configs) {
+            if (config.uid == u.userId) {
                 config.reset(); // 重置视频
                 break;
             }
@@ -171,7 +178,7 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
     protected final void _leave(Promise promise) {
         logD("leave roomId %s", mRoomId);
         leaveRoomCallback = promise;
-        if (sdk != null && !mRoomId.equals(UidConfig.ROOMID_DEFAULT)) {
+        if (sdk != null && !mRoomId.equals(RtcConfig.ROOMID_DEFAULT)) {
             leaveRoom();
         } else {
             resetCallback();
@@ -194,17 +201,19 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
      */
     private void reset() {
         logD("reset");
-        mRoomId = UidConfig.ROOMID_DEFAULT; // 重置房间号
-        users.clear(); // 重置用户
-        for (UidConfig config : configs) {
-            config.reset(); // 重置音视频view代理
+        mRoomId = RtcConfig.ROOMID_DEFAULT;
+        users.clear();
+        for (RtcConfig config : configs) {
+            config.reset();
         }
     }
 
     protected final void _releaseSDK() {
         logD("releaseSDK");
-        destroySDK();
-        sdk = null;
+        if (sdk != null) {
+            destroySDK();
+            sdk = null;
+        }
         reset();
     }
 

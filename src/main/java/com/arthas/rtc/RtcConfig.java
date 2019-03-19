@@ -2,7 +2,7 @@ package com.arthas.rtc;
 
 import static com.arthas.rtc.base.RCTBaseModule.mUid;
 
-public class UidConfig {
+public class RtcConfig {
 
     public static final String ROOMID_DEFAULT = "-1";
     public static final int UID_DEFAULT = -1;

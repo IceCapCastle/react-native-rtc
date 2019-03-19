@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.arthas.rtc.UidConfig;
+import com.arthas.rtc.RtcConfig;
 import com.arthas.rtc.User;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.views.view.ReactViewGroup;
@@ -13,12 +13,12 @@ import static com.arthas.rtc.base.RCTBaseModule.mUid;
 
 public abstract class RCTBaseView<V extends View, Sdk, Module extends RCTBaseModule<Sdk>> extends ReactViewGroup {
 
-    public Context mContext;
-    public V view;
-    public UidConfig config = new UidConfig() {
+    protected Context mContext;
+    protected V view;
+    protected RtcConfig config = new RtcConfig() {
         @Override
         public void onUidChanged(int uid) {
-            connect(new User(uid, null));
+            connect(uid);
         }
     };
 
@@ -62,17 +62,22 @@ public abstract class RCTBaseView<V extends View, Sdk, Module extends RCTBaseMod
     /**
      * 连接
      *
-     * @param user 用户
+     * @param uid 用户id
      */
-    public final void connect(User user) {
-        if (user.userId != UidConfig.UID_DEFAULT) {
-            config.uid = user.userId;
+    public final void connect(int uid) {
+        if (uid != RtcConfig.UID_DEFAULT) {
+            config.uid = uid;
             Sdk sdk = getModule().sdk;
             if (sdk != null) {
-                if (user.userId == mUid) {
-                    previewLocal(sdk, user);
+                if (uid == mUid) {
+                    previewLocal(sdk);
                 } else {
-                    renderRemote(sdk, user);
+                    for (User user : getModule().users) {
+                        if (user.userId == uid) {
+                            renderRemote(sdk, user);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -81,7 +86,7 @@ public abstract class RCTBaseView<V extends View, Sdk, Module extends RCTBaseMod
     /**
      * 预览本地视频
      */
-    protected abstract void previewLocal(Sdk sdk, User user);
+    protected abstract void previewLocal(Sdk sdk);
 
     /**
      * 渲染远端视频

@@ -36,6 +36,15 @@ public interface RtcModule<Sdk> {
     void setupSDK();
 
     /**
+     * 设置视频分辨率
+     *
+     * @param width  宽
+     * @param height 高
+     */
+    @ReactMethod
+    void setVideoResolution(int width, int height);
+
+    /**
      * 加入房间
      *
      * @param token  签名
@@ -45,7 +54,7 @@ public interface RtcModule<Sdk> {
     @ReactMethod
     void join(String token, String roomId, int userId);
 
-    void joinRoom(String token, String roomId, int userId);
+    void joinRoom(String token);
 
     /**
      * 设置是否屏蔽本地

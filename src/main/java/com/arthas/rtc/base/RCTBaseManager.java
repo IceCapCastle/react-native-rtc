@@ -1,6 +1,6 @@
 package com.arthas.rtc.base;
 
-import com.arthas.rtc.UidConfig;
+import com.arthas.rtc.RtcConfig;
 import com.arthas.rtc.User;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
@@ -62,14 +62,14 @@ public abstract class RCTBaseManager<V extends RCTBaseView, Module extends RCTBa
      */
     @ReactProp(name = "userId")
     public final void setUserId(V view, int userId) {
-        if (userId != UidConfig.UID_DEFAULT) { // 绑定userId直接连接
-            view.connect(new User(userId, null));
+        if (userId != RtcConfig.UID_DEFAULT) { // 绑定userId直接连接
+            view.connect(userId);
         } else { // 未绑定userId自动寻找用户连接
             Module module = getModule();
             for (User user : module.users) {
                 // 判断用户是否已经被连接
                 boolean isConnected = false;
-                for (UidConfig config : module.configs) {
+                for (RtcConfig config : module.configs) {
                     if (config.uid == user.userId) {
                         isConnected = true;
                         break;
@@ -77,7 +77,7 @@ public abstract class RCTBaseManager<V extends RCTBaseView, Module extends RCTBa
                 }
                 if (!isConnected) {
                     // 用户未被连接则连接
-                    view.connect(user);
+                    view.connect(user.userId);
                     return;
                 }
             }
@@ -97,7 +97,7 @@ public abstract class RCTBaseManager<V extends RCTBaseView, Module extends RCTBa
         switch (commandId) {
             case COMMAND_CONNECT:
                 if (args != null) {
-                    root.connect(new User(args.getInt(0), null));
+                    root.connect(args.getInt(0));
                 }
                 break;
         }
