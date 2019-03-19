@@ -10,9 +10,12 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule implements RtcModule<Sdk> {
@@ -22,13 +25,13 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
     protected Context mContext; // 上下文
     protected Sdk sdk; // 音视频主类
     protected String mRoomId; // 房间号
+    protected List<User> users = new ArrayList<>(); // 用户集合
+    protected List<RtcConfig> configs = new ArrayList<>(); // rtc配置集合
     protected boolean mMuteLocal = false; // 是否屏蔽本地
     protected boolean mAudioEnable = true; // 是否开启音频
     protected boolean mVideoEnable = true; // 是否开启视频
 
     private Promise leaveRoomCallback; // 退出房间回调
-    List<User> users = new ArrayList<>(); // 用户集合
-    List<RtcConfig> configs = new ArrayList<>(); // rtc配置集合
 
     public RCTBaseModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -46,6 +49,10 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
 
     protected final void logI(String format, Object... params) {
         Log.i(getName(), String.format(format, params));
+    }
+
+    protected final void logW(String format, Object... params) {
+        Log.w(getName(), String.format(format, params));
     }
 
     protected final void logE(String format, Object... params) {
@@ -98,6 +105,13 @@ public abstract class RCTBaseModule<Sdk> extends ReactContextBaseJavaModule impl
         if (sdk != null) {
             setMuteLocal();
         }
+    }
+
+    /**
+     * 创建流id
+     */
+    protected final String createStreamId() {
+        return String.format("android-%s-%s", mUid, new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(new Date()));
     }
 
     protected final void _setAudioEnable(boolean audioEnable) {
