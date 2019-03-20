@@ -25,10 +25,10 @@ allprojects {
 publish {
     userOrg = 'arthasanddk'
     groupId = 'com.arthas.rtc'
-    artifactId = 'RTC'
-    publishVersion = '1.0.2'
+    artifactId = 'react-native-rtc'
+    publishVersion = '1.0.0'
     desc = ''
-    website = 'https://github.com/arthasAndDk/RTC'
+    website = 'https://github.com/arthasAndDk/react-native-rtc_android'
 }
 
 def DEFAULT_COMPILE_SDK_VERSION = 28
