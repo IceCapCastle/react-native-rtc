@@ -28,7 +28,7 @@ publish {
     artifactId = 'react-native-rtc'
     publishVersion = '1.0.0'
     desc = ''
-    website = 'https://github.com/arthasAndDk/react-native-rtc_android'
+    website = 'https://github.com/arthasAndDk/react-native-rtc'
 }
 
 def DEFAULT_COMPILE_SDK_VERSION = 28
