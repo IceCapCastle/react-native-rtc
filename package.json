@@ -1,0 +1,23 @@
+{
+  "name": "react-native-rtc",
+  "version": "1.0.1",
+  "main": "index.js",
+  "devDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      "/android/",
+      "/ios/"
+    ],
+    "globals": [
+      "__DEV__",
+      "alert",
+      "fetch",
+      "requestAnimationFrame",
+      "WebSocket"
+    ]
+  }
+}

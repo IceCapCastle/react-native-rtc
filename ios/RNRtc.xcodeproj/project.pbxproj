@@ -1,0 +1,338 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A5EB26272244ED18000AC6CD /* RtcConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EB261A2244ED17000AC6CD /* RtcConfig.m */; };
+		A5EB26282244ED18000AC6CD /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EB261B2244ED18000AC6CD /* User.m */; };
+		A5EB26292244ED18000AC6CD /* RCTBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EB26222244ED18000AC6CD /* RCTBaseView.m */; };
+		A5EB262A2244ED18000AC6CD /* RCTBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EB26242244ED18000AC6CD /* RCTBaseManager.m */; };
+		A5EB262B2244ED18000AC6CD /* LogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EB26252244ED18000AC6CD /* LogUtil.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A5EB260C2244ECD7000AC6CD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A5EB260E2244ECD7000AC6CD /* libRNRtc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNRtc.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5EB261A2244ED17000AC6CD /* RtcConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RtcConfig.m; sourceTree = "<group>"; };
+		A5EB261B2244ED18000AC6CD /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		A5EB261C2244ED18000AC6CD /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		A5EB261D2244ED18000AC6CD /* LogUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogUtil.h; sourceTree = "<group>"; };
+		A5EB261F2244ED18000AC6CD /* RCTBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTBaseView.h; sourceTree = "<group>"; };
+		A5EB26202244ED18000AC6CD /* RtcViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtcViewDelegate.h; sourceTree = "<group>"; };
+		A5EB26212244ED18000AC6CD /* RCTBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTBaseManager.h; sourceTree = "<group>"; };
+		A5EB26222244ED18000AC6CD /* RCTBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTBaseView.m; sourceTree = "<group>"; };
+		A5EB26232244ED18000AC6CD /* RtcDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtcDelegate.h; sourceTree = "<group>"; };
+		A5EB26242244ED18000AC6CD /* RCTBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTBaseManager.m; sourceTree = "<group>"; };
+		A5EB26252244ED18000AC6CD /* LogUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogUtil.m; sourceTree = "<group>"; };
+		A5EB26262244ED18000AC6CD /* RtcConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtcConfig.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A5EB260B2244ECD7000AC6CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A5EB26052244ECD7000AC6CD = {
+			isa = PBXGroup;
+			children = (
+				A5EB26102244ECD7000AC6CD /* RNRtc */,
+				A5EB260F2244ECD7000AC6CD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A5EB260F2244ECD7000AC6CD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5EB260E2244ECD7000AC6CD /* libRNRtc.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5EB26102244ECD7000AC6CD /* RNRtc */ = {
+			isa = PBXGroup;
+			children = (
+				A5EB261E2244ED18000AC6CD /* Base */,
+				A5EB261D2244ED18000AC6CD /* LogUtil.h */,
+				A5EB26252244ED18000AC6CD /* LogUtil.m */,
+				A5EB26262244ED18000AC6CD /* RtcConfig.h */,
+				A5EB261A2244ED17000AC6CD /* RtcConfig.m */,
+				A5EB261C2244ED18000AC6CD /* User.h */,
+				A5EB261B2244ED18000AC6CD /* User.m */,
+			);
+			path = RNRtc;
+			sourceTree = "<group>";
+		};
+		A5EB261E2244ED18000AC6CD /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				A5EB261F2244ED18000AC6CD /* RCTBaseView.h */,
+				A5EB26202244ED18000AC6CD /* RtcViewDelegate.h */,
+				A5EB26212244ED18000AC6CD /* RCTBaseManager.h */,
+				A5EB26222244ED18000AC6CD /* RCTBaseView.m */,
+				A5EB26232244ED18000AC6CD /* RtcDelegate.h */,
+				A5EB26242244ED18000AC6CD /* RCTBaseManager.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A5EB260D2244ECD7000AC6CD /* RNRtc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5EB26172244ECD7000AC6CD /* Build configuration list for PBXNativeTarget "RNRtc" */;
+			buildPhases = (
+				A5EB260A2244ECD7000AC6CD /* Sources */,
+				A5EB260B2244ECD7000AC6CD /* Frameworks */,
+				A5EB260C2244ECD7000AC6CD /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RNRtc;
+			productName = RNRtc;
+			productReference = A5EB260E2244ECD7000AC6CD /* libRNRtc.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A5EB26062244ECD7000AC6CD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = HUI;
+				TargetAttributes = {
+					A5EB260D2244ECD7000AC6CD = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = A5EB26092244ECD7000AC6CD /* Build configuration list for PBXProject "RNRtc" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A5EB26052244ECD7000AC6CD;
+			productRefGroup = A5EB260F2244ECD7000AC6CD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A5EB260D2244ECD7000AC6CD /* RNRtc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A5EB260A2244ECD7000AC6CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5EB26282244ED18000AC6CD /* User.m in Sources */,
+				A5EB26292244ED18000AC6CD /* RCTBaseView.m in Sources */,
+				A5EB262A2244ED18000AC6CD /* RCTBaseManager.m in Sources */,
+				A5EB262B2244ED18000AC6CD /* LogUtil.m in Sources */,
+				A5EB26272244ED18000AC6CD /* RtcConfig.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A5EB26152244ECD7000AC6CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A5EB26162244ECD7000AC6CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A5EB26182244ECD7000AC6CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 56S4B84HA8;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A5EB26192244ECD7000AC6CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 56S4B84HA8;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A5EB26092244ECD7000AC6CD /* Build configuration list for PBXProject "RNRtc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5EB26152244ECD7000AC6CD /* Debug */,
+				A5EB26162244ECD7000AC6CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5EB26172244ECD7000AC6CD /* Build configuration list for PBXNativeTarget "RNRtc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5EB26182244ECD7000AC6CD /* Debug */,
+				A5EB26192244ECD7000AC6CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A5EB26062244ECD7000AC6CD /* Project object */;
+}
