@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface LogUtil : NSObject
+@interface RTCLogUtil : NSObject
 
 + (NSString *)getLogRootPath:(NSString *)logPath;
 

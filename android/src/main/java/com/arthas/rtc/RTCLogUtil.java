@@ -5,7 +5,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-public class LogUtil {
+public class RTCLogUtil {
 
     /**
      * 获取日志根目录

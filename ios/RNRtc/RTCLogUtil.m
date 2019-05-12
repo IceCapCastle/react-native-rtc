@@ -1,6 +1,6 @@
-#import "LogUtil.h"
+#import "RTCLogUtil.h"
 
-@implementation LogUtil
+@implementation RTCLogUtil
 
 /**
  * 获取日志根目录
@@ -18,7 +18,7 @@
  * 获取日志存储目录
  */
 + (NSString *)getLogSavePath:(NSString *)logPath :(NSString *)logName {
-    NSString *path = [[LogUtil getLogRootPath:logPath] stringByAppendingPathComponent:logName];
+    NSString *path = [[RTCLogUtil getLogRootPath:logPath] stringByAppendingPathComponent:logName];
     return path;
 }
 
