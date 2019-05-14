@@ -4,7 +4,7 @@ import { findNodeHandle, NativeModules, requireNativeComponent, UIManager, ViewP
 
 const RCT_REF = 'RCTXxx'
 const RCTXxxView = requireNativeComponent(RCT_REF, RCTXxx, null) // eslint-disable-line no-use-before-define
-const { TalManager } = NativeModules
+const { XxxModule } = NativeModules
 
 export default class RCTXxx extends Component {
   static propTypes = {
@@ -19,39 +19,43 @@ export default class RCTXxx extends Component {
   }
 
   static getLogPath = () => {
-    return TalManager.logPath
+    return XxxModule.logPath
   }
 
   static init = (isTest = false) => {
-    TalManager.initSDK(isTest)
+    XxxModule.initSDK(isTest)
   }
 
   static setVideoResolution = (width = 320, height = 240) => {
-    TalManager.setVideoResolution(width, height)
+    XxxModule.setVideoResolution(width, height)
   }
 
   static join = ({ finalRoomId }, userId = -1) => {
-    TalManager.join(null, finalRoomId, userId)
-  }
-
-  static leave = () => {
-    return TalManager.leave()
-  }
-
-  static release = () => {
-    TalManager.releaseSDK()
+    return XxxModule.join(null, finalRoomId, userId)
   }
 
   static setMuteLocal = (muteLocal) => {
-    TalManager.setMuteLocal(muteLocal)
+    XxxModule.setMuteLocal(muteLocal)
   }
 
   static setAudioEnable = (audioEnable) => {
-    TalManager.setAudioEnable(audioEnable)
+    XxxModule.setAudioEnable(audioEnable)
   }
 
   static setVideoEnable = (videoEnable) => {
-    TalManager.setVideoEnable(videoEnable)
+    XxxModule.setVideoEnable(videoEnable)
+  }
+
+  static leave = () => {
+    return XxxModule.leave()
+  }
+
+  static release = () => {
+    XxxModule.releaseSDK()
+  }
+
+  static switchCamera = () => {
+    return XxxModule.switchCamera()
   }
 
   connect = (userId) => {

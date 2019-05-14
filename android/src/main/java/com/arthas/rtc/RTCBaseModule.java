@@ -8,8 +8,10 @@ public interface RTCBaseModule<Promise> {
 
     /**
      * 初始化sdk
+     *
+     * @param isTest 是否测试环境
      */
-    void initSDK();
+    void initSDK(boolean isTest);
 
     /**
      * 设置sdk

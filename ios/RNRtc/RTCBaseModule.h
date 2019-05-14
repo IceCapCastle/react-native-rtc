@@ -8,8 +8,10 @@
 
 /**
  * 初始化sdk
+ *
+ * @param isTest 是否测试环境
  */
-- (void)initSDK;
+- (void)initSDK:(BOOL)isTest;
 
 /**
  * 设置sdk

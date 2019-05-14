@@ -20,7 +20,7 @@ public class RTCLogUtil {
         }
         file = new File(file, logPath);
         if (!file.exists()) {
-            //noinspection ResultOfMethodCallIgnored
+            // noinspection ResultOfMethodCallIgnored
             file.mkdirs();
         }
         return file;

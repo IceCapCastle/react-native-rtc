@@ -1,0 +1,15 @@
+#define EVENT_DISCONNECT @"Disconnect" // 连接断开
+#define EVENT_RECONNECT @"Reconnect" // 重连
+#define EVENT_CONNECTSTATE @"ConnectState" // 连接状态
+#define EVENT_JOINROOM @"JoinRoom" // 加入房间
+#define EVENT_LEAVEROOM @"LeaveRoom" // 离开房间
+#define EVENT_USERJOIN @"UserJoin" // 用户加入
+#define EVENT_USERLEAVE @"UserLeave" // 用户离开
+#define EVENT_WARNING @"Warning" // 警告
+#define EVENT_ERROR @"Error" // 错误
+#define EVENT_STREAMUPDATE @"StreamUpdate" // 数据流更新
+#define EVENT_REMOTEVIDEOSTATE @"RemoteVideoState" // 远端视频状态
+#define EVENT_VIDEOSIZE @"VideoSize" // 视频尺寸
+#define EVENT_SOUNDLEVEL @"SoundLevel" // 音量
+#define EVENT_USERMUTEVIDEO @"UserMuteVideo" // 用户禁用视频
+#define EVENT_USERMUTEAUDIO @"UserMuteAudio" // 用户禁用音频
