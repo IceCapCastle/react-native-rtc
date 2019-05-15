@@ -1,6 +1,8 @@
 package com.arthas.rtc;
 
-public interface RTCBaseModule<Promise> {
+import com.facebook.react.bridge.Promise;
+
+public interface RTCBaseModule {
 
     /**
      * 初始化sdk

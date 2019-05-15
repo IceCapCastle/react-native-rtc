@@ -6,7 +6,7 @@ repositories {
   }
 }
 
-compile 'com.arthas.rtc:react-native-rtc:1.0.3'
+compile 'com.arthas.rtc:react-native-rtc:1.0.4'
 ```
 
 ###iOS 配置
