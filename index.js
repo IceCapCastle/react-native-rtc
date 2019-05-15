@@ -58,6 +58,14 @@ export default class RCTXxx extends Component {
     return XxxModule.switchCamera()
   }
 
+  static startPullAudioStream = (userId) => {
+    XxxModule.startPullAudioStream(userId)
+  }
+
+  static stopPullAudioStream = (userId) => {
+    XxxModule.stopPullAudioStream(userId)
+  }
+
   connect = (userId) => {
     UIManager.dispatchViewManagerCommand(
       this._getNodeHandle(),

@@ -1,6 +1,9 @@
 package com.arthas.rtc;
 
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
+
+import javax.annotation.Nullable;
 
 public interface RTCBaseModule {
 
@@ -12,7 +15,7 @@ public interface RTCBaseModule {
     void initSDK(boolean isTest);
 
     /**
-     * 设置sdk
+     * 设置sdk（不需要导出）
      */
     void setupSDK();
 
@@ -65,7 +68,7 @@ public interface RTCBaseModule {
     void releaseSDK();
 
     /**
-     * 创建流
+     * 创建流id（不需要导出）
      */
     String createStreamId();
 
@@ -73,5 +76,27 @@ public interface RTCBaseModule {
      * 切换摄像头
      */
     void switchCamera(Promise promise);
+
+    /**
+     * 开始拉取音频流（适用于只拉取音频流）
+     *
+     * @param userId 用户id
+     */
+    void startPullAudioStream(int userId);
+
+    /**
+     * 停止拉取音频流（适用于只拉取音频流）
+     *
+     * @param userId 用户id
+     */
+    void stopPullAudioStream(int userId);
+
+    /**
+     * 发送事件到JS端（不需要导出）
+     *
+     * @param eventName 事件名
+     * @param params    参数
+     */
+    void sendEvent(String eventName, @Nullable WritableMap params);
 
 }

@@ -14,7 +14,7 @@
 - (void)initSDK:(BOOL)isTest;
 
 /**
- * 设置sdk
+ * 设置sdk（不需要导出）
  */
 - (void)setupSDK;
 
@@ -67,7 +67,7 @@
 - (void)releaseSDK;
 
 /**
- * 创建流
+ * 创建流id（不需要导出）
  */
 - (NSString *)createStreamId;
 
@@ -75,5 +75,27 @@
  * 切换摄像头
  */
 - (void)switchCamera:(id)resolve rejecter:(id)reject;
+
+/**
+ * 开始拉取音频流（适用于只拉取音频流）
+ *
+ * @param userId 用户id
+ */
+- (void)startPullAudioStream:(int)userId;
+
+/**
+ * 停止拉取音频流（适用于只拉取音频流）
+ *
+ * @param userId 用户id
+ */
+- (void)stopPullAudioStream:(int)userId;
+
+/**
+ * 发送事件到JS端（不需要导出）
+ *
+ * @param eventName 事件名
+ * @param params    参数
+ */
+- (void)sendEvent:(NSString *)eventName params:(id)params;
 
 @end
