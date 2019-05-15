@@ -74,6 +74,6 @@
 /**
  * 切换摄像头
  */
-- (void)switchCamerar:(id)resolve rejecter:(id)reject;
+- (void)switchCamera:(id)resolve rejecter:(id)reject;
 
 @end

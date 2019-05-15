@@ -2,10 +2,6 @@ package com.arthas.rtc;
 
 public interface RTCBaseModule<Promise> {
 
-    boolean mMuteLocal = false; // 是否屏蔽本地
-    boolean mAudioEnable = true; // 是否开启音频
-    boolean mVideoEnable = true; // 是否开启视频
-
     /**
      * 初始化sdk
      *

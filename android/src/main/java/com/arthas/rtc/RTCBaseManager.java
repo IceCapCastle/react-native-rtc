@@ -1,6 +1,8 @@
 package com.arthas.rtc;
 
-public interface RTCBaseManager<T extends RTCBaseView> {
+import android.view.View;
+
+public interface RTCBaseManager<T extends View & RTCBaseView> {
 
     String COMMAND_CONNECT = "connect";
     int CODE_CONNECT = 101;
