@@ -1,10 +1,20 @@
 #import <Foundation/Foundation.h>
 
-@protocol RTCBaseModule
+typedef NSString *STREAM_TYPE NS_STRING_ENUM;
+
+FOUNDATION_EXPORT STREAM_TYPE const AUDIO;
+FOUNDATION_EXPORT STREAM_TYPE const VIDEO;
+
+@protocol RTCBaseModuleProtocol
 
 @property (assign, nonatomic) BOOL mMuteLocal; // 是否屏蔽本地
 @property (assign, nonatomic) BOOL mAudioEnable; // 是否开启音频
 @property (assign, nonatomic) BOOL mVideoEnable; // 是否开启视频
+
+/**
+ * 获取module名
+ */
+- (NSString *)getName;
 
 /**
  * 初始化sdk
@@ -97,5 +107,39 @@
  * @param params    参数
  */
 - (void)sendEvent:(NSString *)eventName params:(id)params;
+
+@end
+
+@interface RTCBaseModule : NSObject <RTCBaseModuleProtocol>
+
+- (void)onDisConnect;
+
+- (void)onReconnect:(NSString *)roomId;
+
+- (void)onConnectState:(int)state :(NSNumber *)reason;
+
+- (void)onJoinRoom:(NSString *)roomId :(int)userId;
+
+- (void)onLeaveRoom:(NSString *)roomId;
+
+- (void)onUserJoin:(int)userId;
+
+- (void)onUserLeave:(int)userId :(NSNumber *)reason;
+
+- (void)onWarning:(int)code :(NSString *)message;
+
+- (void)onError:(int)code :(NSString *)message;
+
+- (void)onStreamUpdate:(int)userId :(BOOL)isAdd :(STREAM_TYPE)type;
+
+- (void)onRemoteVideoState:(int)userId :(int)state;
+
+- (void)onVideoSize:(int)userId :(int)width :(int)height :(NSNumber *)rotation;
+
+- (void)onSoundLevel:(int)userId :(int)volume;
+
+- (void)onUserMuteVideo:(int)userId :(BOOL)muted;
+
+- (void)onUserMuteAudio:(int)userId :(BOOL)muted;
 
 @end

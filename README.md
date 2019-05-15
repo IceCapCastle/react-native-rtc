@@ -6,12 +6,12 @@ repositories {
   }
 }
 
-compile 'com.arthas.rtc:react-native-rtc:1.0.4'
+compile 'com.arthas.rtc:react-native-rtc:1.0.6'
 ```
 
 ###iOS 配置
 ```
-pod 'react-native-rtc', '1.0.5'
+pod 'react-native-rtc', '1.0.6'
 
 Header Search Paths $(SRCROOT)/../../../ios/Pods/Headers recursive
 ```
@@ -19,9 +19,9 @@ Header Search Paths $(SRCROOT)/../../../ios/Pods/Headers recursive
 ### **普通回调：**
 Base | Agora | Zego | AnyChat
 ---|---|---|---
-Disconnect<br>连接断开 | [onConnectionLost](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a1abc011459e044a491274415a1230168) | [onDisconnect](https://doc.zego.im/API/ZegoLiveRoom/Android/html/com/zego/zegoliveroom/ZegoLiveRoom.html#onDisconnect-int-java.lang.String-)
-| | [rtcEngineConnectionDidLost](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngineConnectionDidLost:) | [onDisconnect:roomID:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoRoomDelegate.html#//api/name/onDisconnect:roomID:)
-Reconnect<br>重连 | [onRejoinChannelSuccess](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#ad222912d35c5f9c22f95f3072feed77d) | [onReconnect](https://doc.zego.im/API/ZegoLiveRoom/Android/html/com/zego/zegoliveroom/ZegoLiveRoom.html#onReconnect-int-java.lang.String-)
+Disconnect<br>连接断开 | [onConnectionLost](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a1abc011459e044a491274415a1230168)<br>null | [onDisconnect](https://doc.zego.im/API/ZegoLiveRoom/Android/html/com/zego/zegoliveroom/ZegoLiveRoom.html#onDisconnect-int-java.lang.String-)
+| | [rtcEngineConnectionDidLost](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngineConnectionDidLost:)<br>nil | [onDisconnect:roomID:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoRoomDelegate.html#//api/name/onDisconnect:roomID:)
+Reconnect<br>重连 | [onRejoinChannelSuccess](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#ad222912d35c5f9c22f95f3072feed77d)<br> | [onReconnect](https://doc.zego.im/API/ZegoLiveRoom/Android/html/com/zego/zegoliveroom/ZegoLiveRoom.html#onReconnect-int-java.lang.String-)
 | | [didRejoinChannel](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:didRejoinChannel:withUid:elapsed:) | [onReconnect:roomID:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoRoomDelegate.html#//api/name/onReconnect:roomID:)
 ConnectState<br>连接状态 | [onConnectionStateChanged](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a31b2974a574ec45e62bb768e17d1f49e) | [onConnectState](https://doc.zego.im/API/ZegoLiveRoom/Android/html/com/zego/zegoliveroom/ZegoLiveRoom.html#onConnectState-int-)
 | | [connectionChangedToState](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:connectionChangedToState:reason:) | [onConnectState:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoChatRoomDelegate.html#//api/name/onConnectState:)
@@ -45,8 +45,10 @@ VideoSize<br>视频尺寸 | [onVideoSizeChanged](https://docs.agora.io/cn/Video/
 | | [videoSizeChangedOfUid](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:videoSizeChangedOfUid:size:rotation:) | [onCaptureVideoSizeChangedTo:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoLivePublisherDelegate.html#//api/name/onCaptureVideoSizeChangedTo:)<br>[onVideoSizeChangedTo:ofStream:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoLivePlayerDelegate.html#//api/name/onVideoSizeChangedTo:ofStream:)
 SoundLevel<br>音量 | [onAudioVolumeIndication](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a4d37f2b4d569fa787bb8c0e3ae8cd424) | [onSoundLevelUpdate](https://doc.zego.im/API/ZegoLiveRoom/Android/html/com/zego/zegoavkit2/soundlevel/IZegoSoundLevelCallback.html#onSoundLevelUpdate-com.zego.zegoavkit2.soundlevel.ZegoSoundLevelInfo:A-)
 | | [reportAudioVolumeIndicationOfSpeakers](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:) | [onSoundLevelUpdate:](https://doc.zego.im/API/ZegoLiveRoom/iOS/html/Protocols/ZegoSoundLevelDelegate.html#//api/name/onSoundLevelUpdate:)
-| UserMuteVideo<br>用户禁用视频
-| UserMuteAudio<br>用户禁用音频
+| UserMuteVideo<br>用户禁用视频 | [onUserMuteVideo](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a6d406dc427f047d4000a8ae2801b4e51)
+| | [didVideoMuted](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:didVideoMuted:byUid:)
+| UserMuteAudio<br>用户禁用音频 | [onUserMuteAudio](https://docs.agora.io/cn/Video/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler.html#a42ecab512f9fc5ba0785abd9f4d8b2d9)
+| | [didAudioMuted](https://docs.agora.io/cn/Video/API%20Reference/oc/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:didAudioMuted:byUid:)
 
 ### **日志相关回调：**
 Base | Agora | Zego | AnyChat

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A51F798B228C1AFE00C27860 /* RTCBaseModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A51F798A228C1AFE00C27860 /* RTCBaseModule.m */; };
 		A563BEFE22886E7A0040647C /* RTCLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A563BEFB22886E7A0040647C /* RTCLogUtil.m */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		A51F791D228A8BFC00C27860 /* RTCEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTCEvents.h; sourceTree = "<group>"; };
+		A51F798A228C1AFE00C27860 /* RTCBaseModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTCBaseModule.m; sourceTree = "<group>"; };
 		A563BEF922886E7A0040647C /* RTCBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCBaseView.h; sourceTree = "<group>"; };
 		A563BEFA22886E7A0040647C /* RTCBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCBaseManager.h; sourceTree = "<group>"; };
 		A563BEFB22886E7A0040647C /* RTCLogUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCLogUtil.m; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 			children = (
 				A563BEFA22886E7A0040647C /* RTCBaseManager.h */,
 				A563BEFD22886E7A0040647C /* RTCBaseModule.h */,
+				A51F798A228C1AFE00C27860 /* RTCBaseModule.m */,
 				A563BEF922886E7A0040647C /* RTCBaseView.h */,
 				A51F791D228A8BFC00C27860 /* RTCEvents.h */,
 				A563BEFC22886E7A0040647C /* RTCLogUtil.h */,
@@ -128,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A51F798B228C1AFE00C27860 /* RTCBaseModule.m in Sources */,
 				A563BEFE22886E7A0040647C /* RTCLogUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
