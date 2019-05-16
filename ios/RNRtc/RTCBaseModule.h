@@ -4,9 +4,13 @@ typedef NSString *STREAM_TYPE NS_STRING_ENUM;
 
 FOUNDATION_EXPORT STREAM_TYPE const AUDIO;
 FOUNDATION_EXPORT STREAM_TYPE const VIDEO;
+FOUNDATION_EXPORT STREAM_TYPE const ALL;
 
-@protocol RTCBaseModuleProtocol
+@class RTCBaseBridge;
 
+@protocol RTCBaseModule
+
+@property (strong, nonatomic) RTCBaseBridge *rtcBridge;
 @property (assign, nonatomic) BOOL mMuteLocal; // 是否屏蔽本地
 @property (assign, nonatomic) BOOL mAudioEnable; // 是否开启音频
 @property (assign, nonatomic) BOOL mVideoEnable; // 是否开启视频
@@ -110,7 +114,11 @@ FOUNDATION_EXPORT STREAM_TYPE const VIDEO;
 
 @end
 
-@interface RTCBaseModule : NSObject <RTCBaseModuleProtocol>
+@interface RTCBaseBridge : NSObject
+
+@property (weak, nonatomic) id<RTCBaseModule> delegate;
+
++ (instancetype)bridgeWithDelegate:(id<RTCBaseModule>)delegate;
 
 - (void)onDisConnect;
 

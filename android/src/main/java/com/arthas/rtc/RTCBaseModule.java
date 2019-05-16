@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
 
     public enum STREAM_TYPE {
-        AUDIO("audio"), VIDEO("video");
+        AUDIO("audio"), VIDEO("video"), ALL("all");
 
         private String name;
 
