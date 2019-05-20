@@ -20,10 +20,6 @@ static NSMutableArray<RTCStreamInfo *> *users;
     return bridge;
 }
 
-- (void)dealloc {
-    [self.delegate releaseSDK];
-}
-
 + (NSString *)mUid {
     return mUid;
 }
@@ -162,19 +158,21 @@ static NSMutableArray<RTCStreamInfo *> *users;
     [self.delegate sendEvent:EVENT_USERLEAVE params:dic];
 }
 
-- (void)onWarning:(int)code :(NSString *)message {
-    [self log:@"%@ code %d message %@", EVENT_WARNING, code, message];
+- (void)onWarning:(NSString *)type :(int)code :(NSString *)message {
+    [self log:@"%@ type %@ code %d message %@", EVENT_WARNING, type, code, message];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
+    if (type) dic[@"type"] = type;
     dic[@"code"] = @(code);
     if (message) dic[@"message"] = message;
     [self.delegate sendEvent:EVENT_WARNING params:dic];
 }
 
-- (void)onError:(int)code :(NSString *)message {
-    [self log:@"%@ code %d message %@", EVENT_ERROR, code, message];
+- (void)onError:(NSString *)type :(int)code :(NSString *)message {
+    [self log:@"%@ type %@ code %d message %@", EVENT_ERROR, type, code, message];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
+    if (type) dic[@"type"] = type;
     dic[@"code"] = @(code);
     if (message) dic[@"message"] = message;
     [self.delegate sendEvent:EVENT_ERROR params:dic];

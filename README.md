@@ -11,7 +11,7 @@ compile 'com.arthas.rtc:react-native-rtc:1.0.8'
 
 ###iOS 配置
 ```
-pod 'react-native-rtc', '1.0.8'
+pod 'react-native-rtc', '1.0.9'
 
 Header Search Paths $(SRCROOT)/../../../ios/Pods/Headers recursive
 ```

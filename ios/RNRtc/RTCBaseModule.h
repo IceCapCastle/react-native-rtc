@@ -87,11 +87,6 @@ static STREAM_TYPE const ALL = @"all";
 - (void)releaseSDK;
 
 /**
- * 创建流id（不需要导出）
- */
-- (NSString *)createStreamId;
-
-/**
  * 切换摄像头
  */
 - (void)switchCamera:(id)resolve rejecter:(id)reject;
@@ -158,9 +153,9 @@ static STREAM_TYPE const ALL = @"all";
 
 - (void)onUserLeave:(int)userId :(NSNumber *)reason;
 
-- (void)onWarning:(int)code :(NSString *)message;
+- (void)onWarning:(NSString *)type :(int)code :(NSString *)message;
 
-- (void)onError:(int)code :(NSString *)message;
+- (void)onError:(NSString *)type :(int)code :(NSString *)message;
 
 - (void)onStreamUpdate:(int)userId :(BOOL)isAdd :(STREAM_TYPE)type;
 
