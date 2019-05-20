@@ -1,5 +1,31 @@
-.idea/
-.vscode/
-.gradle/
+.tmp/
 build/
+
+# Xcode
+project.xcworkspace/
+xcuserdata/
+Pods/
+Podfile.lock
+
+# Android/IntelliJ/VSCode
+.idea/
+.gradle/
+gradle/
+local.properties
 *.iml
+.vscode/
+android/app/.settings/
+android/.settings/
+android/app/.classpath
+android/app/.project
+android/.project
+typings/
+typings.json
+
+# node.js
+node_modules/
+__tests__/
+yarn.lock
+npm-debug.log
+npm-lock.json
+package-lock.json

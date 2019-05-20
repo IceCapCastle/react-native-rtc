@@ -1,12 +1,18 @@
 #import "RTCBaseModule.h"
 
+#import "RTCConfig.h"
 #import "RTCEvents.h"
-
-NSString * const AUDIO = @"audio";
-NSString * const VIDEO = @"video";
-NSString * const ALL = @"all";
+#import "RTCLogUtil.h"
 
 @implementation RTCBaseBridge
+
+static NSString *mUid;
+static NSMutableArray<RTCStreamInfo *> *users;
+
++ (void)initialize {
+    mUid = UID_DEFAULT;
+    users = [NSMutableArray new];
+}
 
 + (instancetype)bridgeWithDelegate:(id<RTCBaseModule>)delegate {
     RTCBaseBridge *bridge = [RTCBaseBridge new];
@@ -14,14 +20,99 @@ NSString * const ALL = @"all";
     return bridge;
 }
 
+- (void)dealloc {
+    [self.delegate releaseSDK];
+}
+
++ (NSString *)mUid {
+    return mUid;
+}
+
++ (void)setUid:(NSString *)uid {
+    mUid = uid;
+}
+
++ (NSMutableArray<RTCStreamInfo *> *)users {
+    return users;
+}
+
+- (NSDictionary *)constantsToExport {
+    return @{ @"logPath": [RTCLogUtil getLogRootPath: [self.delegate getLogPath]] };
+}
+
+/**
+ * 打印日志
+ */
+- (void)log:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+    va_list args;
+    va_start(args, format);
+    NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    NSLog(@"%@ %@", [self.delegate getName], str);
+}
+
+/**
+ * 重置
+ */
+- (void)reset {
+    self.delegate.mRoomId = nil; // 重置房间号
+    [users removeAllObjects]; // 重置用户
+}
+
+/**
+ * 创建流id
+ */
+- (NSString *)createStreamId {
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.dateFormat = @"yyyyMMddHHmmssSSS";
+    return [NSString stringWithFormat:@"ios-%@-%@", mUid, [formatter stringFromDate:[NSDate date]]];
+}
+
+/**
+ * 追加远端用户
+ *
+ * @param stream 音视频流
+ */
+- (void)addRemoteUser:(RTCStreamInfo *)stream {
+    NSString *uid = stream.userID;
+    NSString *sid = stream.streamID;
+    [self log:@"addRemoteUser uid %@ sid %@", uid, sid];
+    
+    RTCStreamInfo *user = [RTCStreamInfo getUserByUid:uid];
+    if (user) { // 用户存在
+        if ([user.streamID isEqualToString:sid]) { // 流存在则return
+            return;
+        } else { // 流不存在则删除
+            [users removeObject:user];
+        }
+    }
+    [users addObject:[RTCStreamInfo streamInfoWithUid:uid AndSid:sid]]; // 追加用户
+}
+
+/**
+ * 移除远端用户
+ *
+ * @param stream 音视频流
+ */
+- (void)removeRemoteUser:(RTCStreamInfo *)stream {
+    NSString *uid = stream.userID;
+    NSString *sid = stream.streamID;
+    [self log:@"removeRemoteUser uid %@ sid %@", uid, sid];
+    
+    RTCStreamInfo *user = [RTCStreamInfo getUserByUid:uid];
+    if (user) {
+        [users removeObject:user]; // 移除用户
+    }
+}
+
 - (void)onDisConnect {
-    NSLog(@"%@ %@", [self.delegate getName], EVENT_DISCONNECT);
+    [self log:EVENT_DISCONNECT];
     
     [self.delegate sendEvent:EVENT_DISCONNECT params:nil];
 }
 
 - (void)onReconnect:(NSString *)roomId {
-    NSLog(@"%@ %@ roomId %@", [self.delegate getName], EVENT_RECONNECT, roomId);
+    [self log:@"%@ roomId %@", EVENT_RECONNECT, roomId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"roomId"] = roomId;
@@ -29,7 +120,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onConnectState:(int)state :(NSNumber *)reason {
-    NSLog(@"%@ %@ state %d reason %@", [self.delegate getName], EVENT_CONNECTSTATE, state, reason);
+    [self log:@"%@ state %d reason %@", EVENT_CONNECTSTATE, state, reason];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"state"] = @(state);
@@ -38,7 +129,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onJoinRoom:(NSString *)roomId :(int)userId {
-    NSLog(@"%@ %@ roomId %@ userId %d", [self.delegate getName], EVENT_JOINROOM, roomId, userId);
+    [self log:@"%@ roomId %@ userId %d", EVENT_JOINROOM, roomId, userId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"roomId"] = roomId;
@@ -47,7 +138,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onLeaveRoom:(NSString *)roomId {
-    NSLog(@"%@ %@ roomId %@", [self.delegate getName], EVENT_LEAVEROOM, roomId);
+    [self log:@"%@ roomId %@", EVENT_LEAVEROOM, roomId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"roomId"] = roomId;
@@ -55,7 +146,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onUserJoin:(int)userId {
-    NSLog(@"%@ %@ userId %d", [self.delegate getName], EVENT_USERJOIN, userId);
+    [self log:@"%@ userId %d", EVENT_USERJOIN, userId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -63,7 +154,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onUserLeave:(int)userId :(NSNumber *)reason {
-    NSLog(@"%@ %@ userId %d reason %@", [self.delegate getName], EVENT_USERLEAVE, userId, reason);
+    [self log:@"%@ userId %d reason %@", EVENT_USERLEAVE, userId, reason];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -72,7 +163,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onWarning:(int)code :(NSString *)message {
-    NSLog(@"%@ %@ code %d message %@", [self.delegate getName], EVENT_WARNING, code, message);
+    [self log:@"%@ code %d message %@", EVENT_WARNING, code, message];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"code"] = @(code);
@@ -81,7 +172,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onError:(int)code :(NSString *)message {
-    NSLog(@"%@ %@ code %d message %@", [self.delegate getName], EVENT_ERROR, code, message);
+    [self log:@"%@ code %d message %@", EVENT_ERROR, code, message];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"code"] = @(code);
@@ -90,7 +181,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onStreamUpdate:(int)userId :(BOOL)isAdd :(STREAM_TYPE)type {
-    NSLog(@"%@ %@ userId %d isAdd %d streamType %@", [self.delegate getName], EVENT_STREAMUPDATE, userId, isAdd, type);
+    [self log:@"%@ userId %d isAdd %d streamType %@", EVENT_STREAMUPDATE, userId, isAdd, type];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -100,7 +191,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onRemoteVideoState:(int)userId :(int)state {
-    NSLog(@"%@ %@ userId %d state %d", [self.delegate getName], EVENT_REMOTEVIDEOSTATE, userId, state);
+    [self log:@"%@ userId %d state %d", EVENT_REMOTEVIDEOSTATE, userId, state];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -109,7 +200,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onVideoSize:(int)userId :(int)width :(int)height :(NSNumber *)rotation {
-    NSLog(@"%@ %@ userId %d width %d height %d rotation %@", [self.delegate getName], EVENT_VIDEOSIZE, userId, width, height, rotation);
+    [self log:@"%@ userId %d width %d height %d rotation %@", EVENT_VIDEOSIZE, userId, width, height, rotation];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -120,7 +211,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onSoundLevel:(int)userId :(int)volume {
-    NSLog(@"%@ %@ userId %d volume %d", [self.delegate getName], EVENT_SOUNDLEVEL, userId, volume);
+    [self log:@"%@ userId %d volume %d", EVENT_SOUNDLEVEL, userId, volume];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -129,7 +220,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onUserMuteVideo:(int)userId :(BOOL)muted {
-    NSLog(@"%@ %@ userId %d muted %d", [self.delegate getName], EVENT_USERMUTEVIDEO, userId, muted);
+    [self log:@"%@ userId %d muted %d", EVENT_USERMUTEVIDEO, userId, muted];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -138,7 +229,7 @@ NSString * const ALL = @"all";
 }
 
 - (void)onUserMuteAudio:(int)userId :(BOOL)muted {
-    NSLog(@"%@ %@ userId %d muted %d", [self.delegate getName], EVENT_USERMUTEAUDIO, userId, muted);
+    [self log:@"%@ userId %d muted %d", EVENT_USERMUTEAUDIO, userId, muted];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);

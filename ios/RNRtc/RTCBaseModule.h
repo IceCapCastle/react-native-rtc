@@ -1,16 +1,17 @@
-#import <Foundation/Foundation.h>
+#import "RTCStreamInfo.h"
 
 typedef NSString *STREAM_TYPE NS_STRING_ENUM;
 
-FOUNDATION_EXPORT STREAM_TYPE const AUDIO;
-FOUNDATION_EXPORT STREAM_TYPE const VIDEO;
-FOUNDATION_EXPORT STREAM_TYPE const ALL;
+static STREAM_TYPE const AUDIO = @"audio";
+static STREAM_TYPE const VIDEO = @"video";
+static STREAM_TYPE const ALL = @"all";
 
 @class RTCBaseBridge;
 
 @protocol RTCBaseModule
 
 @property (strong, nonatomic) RTCBaseBridge *rtcBridge;
+@property (copy, nonatomic) NSString *mRoomId; // 房间号
 @property (assign, nonatomic) BOOL mMuteLocal; // 是否屏蔽本地
 @property (assign, nonatomic) BOOL mAudioEnable; // 是否开启音频
 @property (assign, nonatomic) BOOL mVideoEnable; // 是否开启视频
@@ -19,6 +20,11 @@ FOUNDATION_EXPORT STREAM_TYPE const ALL;
  * 获取module名
  */
 - (NSString *)getName;
+
+/**
+ * 获取日志目录
+ */
+- (NSString *)getLogPath;
 
 /**
  * 初始化sdk
@@ -119,6 +125,24 @@ FOUNDATION_EXPORT STREAM_TYPE const ALL;
 @property (weak, nonatomic) id<RTCBaseModule> delegate;
 
 + (instancetype)bridgeWithDelegate:(id<RTCBaseModule>)delegate;
+
++ (NSString *)mUid;
+
++ (void)setUid:(NSString *)uid;
+
++ (NSMutableArray<RTCStreamInfo *> *)users;
+
+- (NSDictionary *)constantsToExport;
+
+- (void)log:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
+
+- (void)reset;
+
+- (NSString *)createStreamId;
+
+- (void)addRemoteUser:(RTCStreamInfo *)stream;
+
+- (void)removeRemoteUser:(RTCStreamInfo *)stream;
 
 - (void)onDisConnect;
 

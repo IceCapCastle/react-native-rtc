@@ -1,5 +1,6 @@
 package com.arthas.rtc;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -9,9 +10,26 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.WritableMap;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
+
+    public static String mUid = RTCConfig.UID_DEFAULT; // 用户id
+    public static List<RTCStreamInfo> users = new ArrayList<>(); // 用户集合
+
+    protected Context mContext; // 上下文
+    protected String mRoomId; // 房间号
+    protected boolean mMuteLocal = false; // 是否屏蔽本地
+    protected boolean mAudioEnable = true; // 是否开启音频
+    protected boolean mVideoEnable = true; // 是否开启视频
 
     public enum STREAM_TYPE {
         AUDIO("audio"), VIDEO("video"), ALL("all");
@@ -25,12 +43,53 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
 
     public RTCBaseModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        mContext = reactContext;
     }
 
     /**
      * 获取module名
      */
     public abstract String getName();
+
+    /**
+     * 获取日志目录
+     */
+    protected abstract String getLogPath();
+
+    @Override
+    public void onCatalystInstanceDestroy() {
+        releaseSDK();
+        super.onCatalystInstanceDestroy();
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getConstants() {
+        Map<String, Object> constants = new HashMap<>();
+        constants.put("logPath", RTCLogUtil.getLogRootFile(mContext, getLogPath()).getAbsolutePath());
+        return constants;
+    }
+
+    /**
+     * 打印日志
+     *
+     * @param log 日志
+     */
+    protected void logD(String log) {
+        Log.d(getName(), log);
+    }
+
+    private void logI(String log) {
+        Log.i(getName(), log);
+    }
+
+    private void logW(String log) {
+        Log.w(getName(), log);
+    }
+
+    private void logE(String log) {
+        Log.e(getName(), log);
+    }
 
     /**
      * 初始化sdk
@@ -42,7 +101,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     /**
      * 设置sdk（不需要导出）
      */
-    public abstract void setupSDK();
+    protected abstract void setupSDK();
 
     /**
      * 设置视频分辨率
@@ -88,14 +147,19 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     public abstract void leave(Promise promise);
 
     /**
+     * 重置
+     */
+    protected void reset() {
+        logD("reset");
+
+        mRoomId = null; // 重置房间号
+        users.clear(); // 重置用户
+    }
+
+    /**
      * 释放sdk
      */
     public abstract void releaseSDK();
-
-    /**
-     * 创建流id（不需要导出）
-     */
-    public abstract String createStreamId();
 
     /**
      * 切换摄像头
@@ -122,24 +186,68 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
      * @param eventName 事件名
      * @param params    参数
      */
-    public abstract void sendEvent(String eventName, @Nullable WritableMap params);
+    protected abstract void sendEvent(String eventName, @Nullable WritableMap params);
 
-    public final void onDisConnect() {
-        Log.i(getName(), String.format("%s", RTCEvents.EVENT_DISCONNECT));
+    /**
+     * 创建流id
+     */
+    protected final String createStreamId() {
+        return String.format("android-%s-%s", mUid, new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(new Date()));
+    }
+
+    /**
+     * 追加远端用户
+     *
+     * @param stream 音视频流
+     */
+    protected final void addRemoteUser(RTCStreamInfo stream) {
+        String uid = stream.userID;
+        String sid = stream.streamID;
+        logD(String.format("addRemoteUser uid %s sid %s", uid, sid));
+
+        RTCStreamInfo user = RTCStreamInfo.getUserByUid(uid);
+        if (user != null) { // 用户存在
+            if (user.streamID.equals(sid)) { // 流存在则return
+                return;
+            } else { // 流不存在则删除
+                users.remove(user);
+            }
+        }
+        users.add(new RTCStreamInfo(uid, sid)); // 追加用户
+    }
+
+    /**
+     * 移除远端用户
+     *
+     * @param stream 音视频流
+     */
+    protected final void removeRemoteUser(RTCStreamInfo stream) {
+        String uid = stream.userID;
+        String sid = stream.streamID;
+        logD(String.format("removeRemoteUser uid %s sid %s", uid, sid));
+
+        RTCStreamInfo user = RTCStreamInfo.getUserByUid(uid);
+        if (user != null) {
+            users.remove(user); // 移除用户
+        }
+    }
+
+    protected final void onDisConnect() {
+        logI(String.format("%s", RTCEvents.EVENT_DISCONNECT));
 
         sendEvent(RTCEvents.EVENT_DISCONNECT, null);
     }
 
-    public final void onReconnect(String roomId) {
-        Log.i(getName(), String.format("%s roomId %s", RTCEvents.EVENT_RECONNECT, roomId));
+    protected final void onReconnect(String roomId) {
+        logI(String.format("%s roomId %s", RTCEvents.EVENT_RECONNECT, roomId));
 
         WritableMap map = Arguments.createMap();
         map.putString("roomId", roomId);
         sendEvent(RTCEvents.EVENT_RECONNECT, map);
     }
 
-    public final void onConnectState(int state, Integer reason) {
-        Log.i(getName(), String.format("%s state %d reason %d", RTCEvents.EVENT_CONNECTSTATE, state, reason));
+    protected final void onConnectState(int state, Integer reason) {
+        logI(String.format(Locale.getDefault(), "%s state %d reason %d", RTCEvents.EVENT_CONNECTSTATE, state, reason));
 
         WritableMap map = Arguments.createMap();
         map.putInt("state", state);
@@ -148,8 +256,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_CONNECTSTATE, map);
     }
 
-    public final void onJoinRoom(String roomId, int userId) {
-        Log.i(getName(), String.format("%s roomId %s userId %d", RTCEvents.EVENT_JOINROOM, roomId, userId));
+    protected final void onJoinRoom(String roomId, int userId) {
+        logI(String.format(Locale.getDefault(), "%s roomId %s userId %d", RTCEvents.EVENT_JOINROOM, roomId, userId));
 
         WritableMap map = Arguments.createMap();
         map.putString("roomId", roomId);
@@ -157,24 +265,24 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_JOINROOM, map);
     }
 
-    public final void onLeaveRoom(String roomId) {
-        Log.i(getName(), String.format("%s roomId %s", RTCEvents.EVENT_LEAVEROOM, roomId));
+    protected final void onLeaveRoom(String roomId) {
+        logI(String.format("%s roomId %s", RTCEvents.EVENT_LEAVEROOM, roomId));
 
         WritableMap map = Arguments.createMap();
         map.putString("roomId", roomId);
         sendEvent(RTCEvents.EVENT_LEAVEROOM, map);
     }
 
-    public final void onUserJoin(int userId) {
-        Log.i(getName(), String.format("%s userId %d", RTCEvents.EVENT_USERJOIN, userId));
+    protected final void onUserJoin(int userId) {
+        logI(String.format(Locale.getDefault(), "%s userId %d", RTCEvents.EVENT_USERJOIN, userId));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
         sendEvent(RTCEvents.EVENT_USERJOIN, map);
     }
 
-    public final void onUserLeave(int userId, Integer reason) {
-        Log.i(getName(), String.format("%s userId %d reason %d", RTCEvents.EVENT_USERLEAVE, userId, reason));
+    protected final void onUserLeave(int userId, Integer reason) {
+        logI(String.format(Locale.getDefault(), "%s userId %d reason %d", RTCEvents.EVENT_USERLEAVE, userId, reason));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -183,28 +291,32 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_USERLEAVE, map);
     }
 
-    public final void onWarning(int code, String message) {
-        Log.w(getName(), String.format("%s code %d message %s", RTCEvents.EVENT_WARNING, code, message));
+    protected final void onWarning(String type, int code, String message) {
+        logW(String.format(Locale.getDefault(), "%s code %d message %s", RTCEvents.EVENT_WARNING, code, message));
 
         WritableMap map = Arguments.createMap();
+        if (!TextUtils.isEmpty(type))
+            map.putString("type", type);
         map.putInt("code", code);
         if (!TextUtils.isEmpty(message))
             map.putString("message", message);
         sendEvent(RTCEvents.EVENT_WARNING, map);
     }
 
-    public final void onError(int code, String message) {
-        Log.e(getName(), String.format("%s code %d message %s", RTCEvents.EVENT_ERROR, code, message));
+    protected final void onError(String type, int code, String message) {
+        logE(String.format(Locale.getDefault(), "%s code %d message %s", RTCEvents.EVENT_ERROR, code, message));
 
         WritableMap map = Arguments.createMap();
+        if (!TextUtils.isEmpty(type))
+            map.putString("type", type);
         map.putInt("code", code);
         if (!TextUtils.isEmpty(message))
             map.putString("message", message);
         sendEvent(RTCEvents.EVENT_ERROR, map);
     }
 
-    public final void onStreamUpdate(int userId, boolean isAdd, STREAM_TYPE type) {
-        Log.i(getName(), String.format("%s userId %d isAdd %b streamType %s", RTCEvents.EVENT_STREAMUPDATE, userId, isAdd, type.name));
+    protected final void onStreamUpdate(int userId, boolean isAdd, STREAM_TYPE type) {
+        logI(String.format(Locale.getDefault(), "%s userId %d isAdd %b streamType %s", RTCEvents.EVENT_STREAMUPDATE, userId, isAdd, type.name));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -214,8 +326,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_STREAMUPDATE, map);
     }
 
-    public final void onRemoteVideoState(int userId, int state) {
-        Log.i(getName(), String.format("%s userId %d state %d", RTCEvents.EVENT_REMOTEVIDEOSTATE, userId, state));
+    protected final void onRemoteVideoState(int userId, int state) {
+        logI(String.format(Locale.getDefault(), "%s userId %d state %d", RTCEvents.EVENT_REMOTEVIDEOSTATE, userId, state));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -223,8 +335,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_REMOTEVIDEOSTATE, map);
     }
 
-    public final void onVideoSize(int userId, int width, int height, Integer rotation) {
-        Log.i(getName(), String.format("%s userId %d width %d height %d rotation %d", RTCEvents.EVENT_VIDEOSIZE, userId, width, height, rotation));
+    protected final void onVideoSize(int userId, int width, int height, Integer rotation) {
+        logI(String.format(Locale.getDefault(), "%s userId %d width %d height %d rotation %d", RTCEvents.EVENT_VIDEOSIZE, userId, width, height, rotation));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -235,8 +347,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_VIDEOSIZE, map);
     }
 
-    public final void onSoundLevel(int userId, int volume) {
-        Log.i(getName(), String.format("%s userId %d volume %d", RTCEvents.EVENT_SOUNDLEVEL, userId, volume));
+    protected final void onSoundLevel(int userId, int volume) {
+        logI(String.format(Locale.getDefault(), "%s userId %d volume %d", RTCEvents.EVENT_SOUNDLEVEL, userId, volume));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -244,8 +356,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_SOUNDLEVEL, map);
     }
 
-    public final void onUserMuteVideo(int userId, boolean muted) {
-        Log.i(getName(), String.format("%s userId %d muted %b", RTCEvents.EVENT_USERMUTEVIDEO, userId, muted));
+    protected final void onUserMuteVideo(int userId, boolean muted) {
+        logI(String.format(Locale.getDefault(), "%s userId %d muted %b", RTCEvents.EVENT_USERMUTEVIDEO, userId, muted));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -253,8 +365,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         sendEvent(RTCEvents.EVENT_USERMUTEVIDEO, map);
     }
 
-    public final void onUserMuteAudio(int userId, boolean muted) {
-        Log.i(getName(), String.format("%s userId %d muted %b", RTCEvents.EVENT_USERMUTEAUDIO, userId, muted));
+    protected final void onUserMuteAudio(int userId, boolean muted) {
+        logI(String.format(Locale.getDefault(), "%s userId %d muted %b", RTCEvents.EVENT_USERMUTEAUDIO, userId, muted));
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
