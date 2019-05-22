@@ -10,6 +10,7 @@
 		A50A0CD32292D682000F2639 /* RTCLogUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A50A0CC92292D680000F2639 /* RTCLogUtil.m */; };
 		A50A0CD42292D682000F2639 /* RTCBaseModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A50A0CCC2292D681000F2639 /* RTCBaseModule.m */; };
 		A50A0CD52292D682000F2639 /* RTCStreamInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A50A0CCF2292D681000F2639 /* RTCStreamInfo.m */; };
+		A5C019AF229518C800D97512 /* RTCVerifyUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C019AD229518C800D97512 /* RTCVerifyUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,8 @@
 		A50A0CD02292D682000F2639 /* RTCBaseModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCBaseModule.h; sourceTree = "<group>"; };
 		A50A0CD12292D682000F2639 /* RTCEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCEvents.h; sourceTree = "<group>"; };
 		A50A0CD22292D682000F2639 /* RTCBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCBaseView.h; sourceTree = "<group>"; };
+		A5C019AD229518C800D97512 /* RTCVerifyUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTCVerifyUtil.m; sourceTree = "<group>"; };
+		A5C019AE229518C800D97512 /* RTCVerifyUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTCVerifyUtil.h; sourceTree = "<group>"; };
 		A5EB260E2244ECD7000AC6CD /* libRNRtc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNRtc.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,6 +65,8 @@
 				A50A0CC92292D680000F2639 /* RTCLogUtil.m */,
 				A50A0CCA2292D681000F2639 /* RTCStreamInfo.h */,
 				A50A0CCF2292D681000F2639 /* RTCStreamInfo.m */,
+				A5C019AE229518C800D97512 /* RTCVerifyUtil.h */,
+				A5C019AD229518C800D97512 /* RTCVerifyUtil.m */,
 			);
 			path = RNRtc;
 			sourceTree = "<group>";
@@ -140,6 +145,7 @@
 			files = (
 				A50A0CD52292D682000F2639 /* RTCStreamInfo.m in Sources */,
 				A50A0CD42292D682000F2639 /* RTCBaseModule.m in Sources */,
+				A5C019AF229518C800D97512 /* RTCVerifyUtil.m in Sources */,
 				A50A0CD32292D682000F2639 /* RTCLogUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

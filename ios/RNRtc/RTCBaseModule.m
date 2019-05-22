@@ -6,7 +6,7 @@
 
 @implementation RTCBaseBridge
 
-static NSString *mUid;
+static int mUid;
 static NSMutableArray<RTCStreamInfo *> *users;
 
 + (void)initialize {
@@ -20,12 +20,20 @@ static NSMutableArray<RTCStreamInfo *> *users;
     return bridge;
 }
 
-+ (NSString *)mUid {
++ (int)mUid {
     return mUid;
 }
 
-+ (void)setUid:(NSString *)uid {
++ (NSString *)mUidStr {
+    return [NSString stringWithFormat:@"%d", mUid];
+}
+
++ (void)setmUid:(int)uid {
     mUid = uid;
+}
+
++ (void)setmUidStr:(NSString *)uid {
+    mUid = [uid intValue];
 }
 
 + (NSMutableArray<RTCStreamInfo *> *)users {
@@ -33,7 +41,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (NSDictionary *)constantsToExport {
-    return @{ @"logPath": [RTCLogUtil getLogRootPath: [self.delegate getLogPath]] };
+    return @{@"logPath": [RTCLogUtil getLogRootPath:[self.delegate getLogPath]]};
 }
 
 /**

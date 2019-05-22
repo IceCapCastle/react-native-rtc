@@ -1,88 +1,28 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { findNodeHandle, NativeModules, requireNativeComponent, UIManager, ViewPropTypes } from 'react-native'
+export const Events = {
+  EVENT_DISCONNECT: 'Disconnect',  // 连接断开
+  EVENT_RECONNECT: 'Reconnect',  // 重连
+  EVENT_CONNECTSTATE: 'ConnectState',  // 连接状态
+  EVENT_JOINROOM: 'JoinRoom',  // 加入房间
+  EVENT_LEAVEROOM: 'LeaveRoom',  // 离开房间
+  EVENT_USERJOIN: 'UserJoin',  // 用户加入
+  EVENT_USERLEAVE: 'UserLeave',  // 用户离开
+  EVENT_WARNING: 'Warning',  // 警告
+  EVENT_ERROR: 'Error',  // 错误
+  EVENT_STREAMUPDATE: 'StreamUpdate',  // 数据流更新
+  EVENT_REMOTEVIDEOSTATE: 'RemoteVideoState',  // 远端视频状态
+  EVENT_VIDEOSIZE: 'VideoSize',  // 视频尺寸
+  EVENT_SOUNDLEVEL: 'SoundLevel',  // 音量
+  EVENT_USERMUTEVIDEO: 'UserMuteVideo',  // 用户禁用视频
+  EVENT_USERMUTEAUDIO: 'UserMuteAudio', // 用户禁用音频
+}
 
-const RCT_REF = 'RCTXxx'
-const RCTXxxView = requireNativeComponent(RCT_REF, RCTXxx, null) // eslint-disable-line no-use-before-define
-const { XxxModule } = NativeModules
-
-export default class RCTXxx extends Component {
-  static propTypes = {
-    onTop: PropTypes.bool,
-    userId: PropTypes.number,
-    ...ViewPropTypes
-  }
-
-  static defaultProps = {
-    onTop: false,
-    userId: -1
-  }
-
-  static getLogPath = () => {
-    return XxxModule.logPath
-  }
-
-  static init = (isTest = false) => {
-    XxxModule.initSDK(isTest)
-  }
-
-  static setVideoResolution = (width = 320, height = 240) => {
-    XxxModule.setVideoResolution(width, height)
-  }
-
-  static join = ({ finalRoomId }, userId = -1) => {
-    return XxxModule.join(null, finalRoomId, userId)
-  }
-
-  static setMuteLocal = (muteLocal) => {
-    XxxModule.setMuteLocal(muteLocal)
-  }
-
-  static setAudioEnable = (audioEnable) => {
-    XxxModule.setAudioEnable(audioEnable)
-  }
-
-  static setVideoEnable = (videoEnable) => {
-    XxxModule.setVideoEnable(videoEnable)
-  }
-
-  static leave = () => {
-    return XxxModule.leave()
-  }
-
-  static release = () => {
-    XxxModule.releaseSDK()
-  }
-
-  static switchCamera = () => {
-    return XxxModule.switchCamera()
-  }
-
-  static startPullAudioStream = (userId) => {
-    XxxModule.startPullAudioStream(userId)
-  }
-
-  static stopPullAudioStream = (userId) => {
-    XxxModule.stopPullAudioStream(userId)
-  }
-
-  connect = (userId) => {
-    UIManager.dispatchViewManagerCommand(
-      this._getNodeHandle(),
-      UIManager.RCTXxx.Commands.connect,
-      [userId]
-    )
-  }
-
-  _getNodeHandle = () => {
-    return findNodeHandle(this.refs[RCT_REF])
-  }
-
-  render () {
-    return (
-      <RCTXxxView
-        ref={RCT_REF}
-        {...this.props} />
-    )
-  }
+export const Configs = {
+  // 默认视频编码分辨率
+  VIDEO_WIDTH_ENCODE_DEFAULT: 320,
+  VIDEO_HEIGHT_ENCODE_DEFAULT: 240,
+  // 默认视频采集分辨率
+  VIDEO_WIDTH_CAPTURE_DEFAULT: 640,
+  VIDEO_HEIGHT_CAPTURE_DEFAULT: 480,
+  // 默认userId
+  UID_DEFAULT: -1,
 }

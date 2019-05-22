@@ -9,6 +9,6 @@ public class RTCConfig {
     public static final int VIDEO_WIDTH_CAPTURE_DEFAULT = 640;
     public static final int VIDEO_HEIGHT_CAPTURE_DEFAULT = 480;
     // 默认userId
-    public static final String UID_DEFAULT = "-1";
+    public static final int UID_DEFAULT = -1;
 
 }

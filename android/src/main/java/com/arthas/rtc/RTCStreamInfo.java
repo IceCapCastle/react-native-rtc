@@ -1,7 +1,5 @@
 package com.arthas.rtc;
 
-import static com.arthas.rtc.RTCBaseModule.users;
-
 public class RTCStreamInfo {
 
     public String userID;
@@ -16,7 +14,7 @@ public class RTCStreamInfo {
     }
 
     public static RTCStreamInfo getUserByUid(String uid) {
-        for (RTCStreamInfo user : users) {
+        for (RTCStreamInfo user : RTCBaseModule.getUsers()) {
             if (user.userID.equals(uid)) {
                 return user;
             }
@@ -25,7 +23,7 @@ public class RTCStreamInfo {
     }
 
     public static RTCStreamInfo getUserBySid(String sid) {
-        for (RTCStreamInfo user : users) {
+        for (RTCStreamInfo user : RTCBaseModule.getUsers()) {
             if (user.streamID.equals(sid)) {
                 return user;
             }

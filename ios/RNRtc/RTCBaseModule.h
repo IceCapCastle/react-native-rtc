@@ -121,9 +121,13 @@ static STREAM_TYPE const ALL = @"all";
 
 + (instancetype)bridgeWithDelegate:(id<RTCBaseModule>)delegate;
 
-+ (NSString *)mUid;
++ (int)mUid;
 
-+ (void)setUid:(NSString *)uid;
++ (NSString *)mUidStr;
+
++ (void)setmUid:(int)uid;
+
++ (void)setmUidStr:(NSString *)uid;
 
 + (NSMutableArray<RTCStreamInfo *> *)users;
 

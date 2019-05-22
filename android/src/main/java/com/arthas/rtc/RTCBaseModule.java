@@ -22,8 +22,28 @@ import javax.annotation.Nullable;
 
 public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
 
-    public static String mUid = RTCConfig.UID_DEFAULT; // 用户id
-    public static List<RTCStreamInfo> users = new ArrayList<>(); // 用户集合
+    private static int mUid = RTCConfig.UID_DEFAULT; // 用户id
+    private static List<RTCStreamInfo> users = new ArrayList<>(); // 用户集合
+
+    protected static int getmUid() {
+        return mUid;
+    }
+
+    protected static void setmUid(int uid) {
+        mUid = uid;
+    }
+
+    protected static String getmUidStr() {
+        return String.valueOf(mUid);
+    }
+
+    protected static void setmUidStr(String uid) {
+        mUid = Integer.parseInt(uid);
+    }
+
+    protected static List<RTCStreamInfo> getUsers() {
+        return users;
+    }
 
     protected Context mContext; // 上下文
     protected String mRoomId; // 房间号
@@ -72,23 +92,21 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
 
     /**
      * 打印日志
-     *
-     * @param log 日志
      */
-    protected void logD(String log) {
-        Log.d(getName(), log);
+    protected void logD(String format, Object... args) {
+        Log.d(getName(), String.format(format, args));
     }
 
-    private void logI(String log) {
-        Log.i(getName(), log);
+    private void logI(String format, Object... args) {
+        Log.i(getName(), String.format(format, args));
     }
 
-    private void logW(String log) {
-        Log.w(getName(), log);
+    private void logW(String format, Object... args) {
+        Log.w(getName(), String.format(format, args));
     }
 
-    private void logE(String log) {
-        Log.e(getName(), log);
+    private void logE(String format, Object... args) {
+        Log.e(getName(), String.format(format, args));
     }
 
     /**
@@ -192,7 +210,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
      * 创建流id
      */
     protected final String createStreamId() {
-        return String.format("android-%s-%s", mUid, new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(new Date()));
+        return String.format(Locale.getDefault(), "android-%d-%s", mUid, new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault()).format(new Date()));
     }
 
     /**
@@ -203,7 +221,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     protected final void addRemoteUser(RTCStreamInfo stream) {
         String uid = stream.userID;
         String sid = stream.streamID;
-        logD(String.format("addRemoteUser uid %s sid %s", uid, sid));
+        logD("addRemoteUser uid %s sid %s", uid, sid);
 
         RTCStreamInfo user = RTCStreamInfo.getUserByUid(uid);
         if (user != null) { // 用户存在
@@ -224,7 +242,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     protected final void removeRemoteUser(RTCStreamInfo stream) {
         String uid = stream.userID;
         String sid = stream.streamID;
-        logD(String.format("removeRemoteUser uid %s sid %s", uid, sid));
+        logD("removeRemoteUser uid %s sid %s", uid, sid);
 
         RTCStreamInfo user = RTCStreamInfo.getUserByUid(uid);
         if (user != null) {
@@ -233,13 +251,13 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onDisConnect() {
-        logI(String.format("%s", RTCEvents.EVENT_DISCONNECT));
+        logI("%s", RTCEvents.EVENT_DISCONNECT);
 
         sendEvent(RTCEvents.EVENT_DISCONNECT, null);
     }
 
     protected final void onReconnect(String roomId) {
-        logI(String.format("%s roomId %s", RTCEvents.EVENT_RECONNECT, roomId));
+        logI("%s roomId %s", RTCEvents.EVENT_RECONNECT, roomId);
 
         WritableMap map = Arguments.createMap();
         map.putString("roomId", roomId);
@@ -247,7 +265,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onConnectState(int state, Integer reason) {
-        logI(String.format(Locale.getDefault(), "%s state %d reason %d", RTCEvents.EVENT_CONNECTSTATE, state, reason));
+        logI("%s state %d reason %d", RTCEvents.EVENT_CONNECTSTATE, state, reason);
 
         WritableMap map = Arguments.createMap();
         map.putInt("state", state);
@@ -257,7 +275,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onJoinRoom(String roomId, int userId) {
-        logI(String.format(Locale.getDefault(), "%s roomId %s userId %d", RTCEvents.EVENT_JOINROOM, roomId, userId));
+        logI("%s roomId %s userId %d", RTCEvents.EVENT_JOINROOM, roomId, userId);
 
         WritableMap map = Arguments.createMap();
         map.putString("roomId", roomId);
@@ -266,7 +284,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onLeaveRoom(String roomId) {
-        logI(String.format("%s roomId %s", RTCEvents.EVENT_LEAVEROOM, roomId));
+        logI("%s roomId %s", RTCEvents.EVENT_LEAVEROOM, roomId);
 
         WritableMap map = Arguments.createMap();
         map.putString("roomId", roomId);
@@ -274,7 +292,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onUserJoin(int userId) {
-        logI(String.format(Locale.getDefault(), "%s userId %d", RTCEvents.EVENT_USERJOIN, userId));
+        logI("%s userId %d", RTCEvents.EVENT_USERJOIN, userId);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -282,7 +300,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onUserLeave(int userId, Integer reason) {
-        logI(String.format(Locale.getDefault(), "%s userId %d reason %d", RTCEvents.EVENT_USERLEAVE, userId, reason));
+        logI("%s userId %d reason %d", RTCEvents.EVENT_USERLEAVE, userId, reason);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -292,7 +310,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onWarning(String type, int code, String message) {
-        logW(String.format(Locale.getDefault(), "%s code %d message %s", RTCEvents.EVENT_WARNING, code, message));
+        logW("%s code %d message %s", RTCEvents.EVENT_WARNING, code, message);
 
         WritableMap map = Arguments.createMap();
         if (!TextUtils.isEmpty(type))
@@ -304,7 +322,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onError(String type, int code, String message) {
-        logE(String.format(Locale.getDefault(), "%s code %d message %s", RTCEvents.EVENT_ERROR, code, message));
+        logE("%s code %d message %s", RTCEvents.EVENT_ERROR, code, message);
 
         WritableMap map = Arguments.createMap();
         if (!TextUtils.isEmpty(type))
@@ -316,7 +334,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onStreamUpdate(int userId, boolean isAdd, STREAM_TYPE type) {
-        logI(String.format(Locale.getDefault(), "%s userId %d isAdd %b streamType %s", RTCEvents.EVENT_STREAMUPDATE, userId, isAdd, type.name));
+        logI("%s userId %d isAdd %b streamType %s", RTCEvents.EVENT_STREAMUPDATE, userId, isAdd, type.name);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -327,7 +345,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onRemoteVideoState(int userId, int state) {
-        logI(String.format(Locale.getDefault(), "%s userId %d state %d", RTCEvents.EVENT_REMOTEVIDEOSTATE, userId, state));
+        logI("%s userId %d state %d", RTCEvents.EVENT_REMOTEVIDEOSTATE, userId, state);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -336,7 +354,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onVideoSize(int userId, int width, int height, Integer rotation) {
-        logI(String.format(Locale.getDefault(), "%s userId %d width %d height %d rotation %d", RTCEvents.EVENT_VIDEOSIZE, userId, width, height, rotation));
+        logI("%s userId %d width %d height %d rotation %d", RTCEvents.EVENT_VIDEOSIZE, userId, width, height, rotation);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -348,7 +366,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onSoundLevel(int userId, int volume) {
-        logI(String.format(Locale.getDefault(), "%s userId %d volume %d", RTCEvents.EVENT_SOUNDLEVEL, userId, volume));
+        logI("%s userId %d volume %d", RTCEvents.EVENT_SOUNDLEVEL, userId, volume);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -357,7 +375,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onUserMuteVideo(int userId, boolean muted) {
-        logI(String.format(Locale.getDefault(), "%s userId %d muted %b", RTCEvents.EVENT_USERMUTEVIDEO, userId, muted));
+        logI("%s userId %d muted %b", RTCEvents.EVENT_USERMUTEVIDEO, userId, muted);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
@@ -366,7 +384,7 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     }
 
     protected final void onUserMuteAudio(int userId, boolean muted) {
-        logI(String.format(Locale.getDefault(), "%s userId %d muted %b", RTCEvents.EVENT_USERMUTEAUDIO, userId, muted));
+        logI("%s userId %d muted %b", RTCEvents.EVENT_USERMUTEAUDIO, userId, muted);
 
         WritableMap map = Arguments.createMap();
         map.putInt("userId", userId);
