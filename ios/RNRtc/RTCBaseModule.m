@@ -69,7 +69,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 - (NSString *)createStreamId {
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"yyyyMMddHHmmssSSS";
-    return [NSString stringWithFormat:@"ios-%@-%@", mUid, [formatter stringFromDate:[NSDate date]]];
+    return [NSString stringWithFormat:@"ios-%d-%@", mUid, [formatter stringFromDate:[NSDate date]]];
 }
 
 /**

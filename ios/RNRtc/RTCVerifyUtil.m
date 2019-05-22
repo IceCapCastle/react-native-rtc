@@ -14,11 +14,11 @@
 }
 
 + (BOOL)isAvailableUid:(int)uid {
-    return UID_DEFAULT == uid;
+    return UID_DEFAULT != uid;
 }
 
 + (BOOL)isAvailableUidStr:(NSString *)uid {
-    return [[NSString stringWithFormat:@"%d", UID_DEFAULT] isEqualToString:uid];
+    return ![[NSString stringWithFormat:@"%d", UID_DEFAULT] isEqualToString:uid];
 }
 
 @end

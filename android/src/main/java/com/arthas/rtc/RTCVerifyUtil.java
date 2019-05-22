@@ -15,7 +15,7 @@ public class RTCVerifyUtil {
     }
 
     public static boolean isAvailableUid(String uid) {
-        return String.valueOf(RTCConfig.UID_DEFAULT).equals(uid);
+        return !String.valueOf(RTCConfig.UID_DEFAULT).equals(uid);
     }
 
 }
