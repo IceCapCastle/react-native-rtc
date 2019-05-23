@@ -41,7 +41,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (NSDictionary *)constantsToExport {
-    return @{@"logPath": [RTCLogUtil getLogRootPath:[self.delegate getLogPath]]};
+    return @{@"logPath": [RTCLogUtil getLogRootPath:[self.delegate getLogRootPath] :[self.delegate getLogPath]]};
 }
 
 /**

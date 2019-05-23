@@ -1,3 +1,5 @@
+.gradle/
+.vscode/
 android/
 ios/
 react-native-rtc.podspec

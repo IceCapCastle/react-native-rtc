@@ -1,7 +1,7 @@
 @interface RTCLogUtil : NSObject
 
-+ (NSString *)getLogRootPath:(NSString *)logPath;
++ (NSString *)getLogRootPath:(NSSearchPathDirectory)rootPath :(NSString *)logPath;
 
-+ (NSString *)getLogSavePath:(NSString *)logPath :(NSString *)logName;
++ (NSString *)getLogSavePath:(NSSearchPathDirectory)rootPath :(NSString *)logPath :(NSString *)logName;
 
 @end

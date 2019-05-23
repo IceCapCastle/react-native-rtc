@@ -40,7 +40,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion project.hasProperty('targetSdkVersion') ? project.targetSdkVersion : DEFAULT_TARGET_SDK_VERSION
-        versionCode 5
+        versionCode 11
         versionName "1.0.10.1"
     }
 }

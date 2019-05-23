@@ -5,8 +5,8 @@
 /**
  * 获取日志根目录
  */
-+ (NSString *)getLogRootPath:(NSString *)logPath {
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:logPath];
++ (NSString *)getLogRootPath:(NSSearchPathDirectory)rootPath :(NSString *)logPath {
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(rootPath, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:logPath];
     NSFileManager *manager = [NSFileManager defaultManager];
     if (![manager fileExistsAtPath:path]) {
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
@@ -17,8 +17,8 @@
 /**
  * 获取日志存储目录
  */
-+ (NSString *)getLogSavePath:(NSString *)logPath :(NSString *)logName {
-    NSString *path = [[RTCLogUtil getLogRootPath:logPath] stringByAppendingPathComponent:logName];
++ (NSString *)getLogSavePath:(NSSearchPathDirectory)rootPath :(NSString *)logPath :(NSString *)logName {
+    NSString *path = [[RTCLogUtil getLogRootPath:rootPath :logPath] stringByAppendingPathComponent:logName];
     return path;
 }
 

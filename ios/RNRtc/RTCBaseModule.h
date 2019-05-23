@@ -24,6 +24,7 @@ static STREAM_TYPE const ALL = @"all";
 /**
  * 获取日志目录
  */
+- (NSSearchPathDirectory)getLogRootPath;
 - (NSString *)getLogPath;
 
 /**
