@@ -2,6 +2,6 @@
 
 @protocol RTCBaseManager
 
-- (void)connect:(nonnull NSNumber *)reactTag :(int)uid;
+- (void)connect:(nonnull NSNumber *)reactTag :(int)userId :(BOOL)audioEnable :(BOOL)videoEnable;
 
 @end

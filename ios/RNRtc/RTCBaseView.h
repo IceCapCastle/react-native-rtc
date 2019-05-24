@@ -1,7 +1,19 @@
 @protocol RTCBaseView
 
-- (void)setUserId:(int)userId;
+- (void)setUserId:(NSDictionary *)data;
 
-- (void)connect:(int)userId;
+/**
+ * 预览本地
+ */
+- (void)previewLocal;
+
+/**
+ * 渲染远端
+ *
+ * @param userId      用户id
+ * @param audioEnable 是否拉音频
+ * @param videoEnable 是否拉视频
+ */
+- (void)renderRemote:(int)userId :(BOOL)audioEnable :(BOOL)videoEnable;
 
 @end
