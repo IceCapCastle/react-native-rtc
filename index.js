@@ -1,33 +1,30 @@
-const eventNames = {}
+const eventMap = new Map()
 
 function on (rtc, eventName, callback) {
-  if (!eventNames[rtc]) {
-    eventNames[rtc] = new Set()
+  if (!eventMap.get(rtc)) {
+    eventMap.set(rtc, new Set())
   }
   rtc.addListener(eventName, callback)
-  eventNames[rtc].add(eventName)
+  eventMap.get(rtc).add(eventName)
 }
 
 function off (rtc, eventName) {
   rtc.removeAllListeners(eventName)
-  eventNames[rtc].delete(eventName)
+  eventMap.get(rtc).delete(eventName)
 }
 
 function removeListeners (rtc) {
-  const set = eventNames[rtc]
+  const set = eventMap.get(rtc)
   if (set) {
     for (const eventName of set) {
-      rtc.removeAllListeners(eventName)
+      off(rtc, eventName)
     }
-    set.clear()
   }
 }
 
 function removeAllListeners () {
-  for (const rtc in eventNames) {
-    if (eventNames.hasOwnProperty(rtc)) {
-      removeListeners(rtc)
-    }
+  for (const rtc of eventMap.keys()) {
+    removeListeners(rtc)
   }
 }
 
