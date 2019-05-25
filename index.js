@@ -1,3 +1,40 @@
+const eventNames = {}
+
+function on (rtc, eventName, callback) {
+  if (!eventNames[rtc]) {
+    eventNames[rtc] = new Set()
+  }
+  rtc.addListener(eventName, callback)
+  eventNames[rtc].add(eventName)
+}
+
+function off (rtc, eventName) {
+  rtc.removeAllListeners(eventName)
+  eventNames[rtc].delete(eventName)
+}
+
+function removeListeners (rtc) {
+  const set = eventNames[rtc]
+  if (set) {
+    for (const eventName of set) {
+      rtc.removeAllListeners(eventName)
+    }
+    set.clear()
+  }
+}
+
+function removeAllListeners () {
+  for (const rtc in eventNames) {
+    if (eventNames.hasOwnProperty(rtc)) {
+      removeListeners(rtc)
+    }
+  }
+}
+
+export default {
+  on, off, removeListeners, removeAllListeners
+}
+
 export const Events = {
   EVENT_DISCONNECT: 'Disconnect',  // 连接断开
   EVENT_RECONNECT: 'Reconnect',  // 重连
