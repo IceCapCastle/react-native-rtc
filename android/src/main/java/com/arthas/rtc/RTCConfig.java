@@ -11,4 +11,8 @@ public class RTCConfig {
     // 默认userId
     public static final int UID_DEFAULT = -1;
 
+    // 常量
+    public static final String KEY_UID = "uid";
+    public static final String KEY_IS_MYSELF = "isMyself";
+
 }

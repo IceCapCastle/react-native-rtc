@@ -9,15 +9,15 @@
     return [RTCBaseBridge mUid] == uid;
 }
 
-+ (NSString *)isMyselfStr:(NSString *)uid {
++ (NSDictionary *)isMyselfStr:(NSString *)uid {
+    NSMutableDictionary<NSString *, id> *dic = nil;
     if (uid && uid.length > 0) {
         uid = [uid componentsSeparatedByString:@"_"].firstObject;
-        if ([[RTCBaseBridge mUidStr] isEqualToString:uid]) {
-            return uid;
-        }
-        return @"";
+        dic = [NSMutableDictionary new];
+        dic[KEY_UID] = uid;
+        dic[KEY_IS_MYSELF] = @([[RTCBaseBridge mUidStr] isEqualToString:uid]);
     }
-    return nil;
+    return dic;
 }
 
 + (BOOL)isAvailableUid:(int)uid {

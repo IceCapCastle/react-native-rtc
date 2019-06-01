@@ -2,7 +2,7 @@
 
 + (BOOL)isMyself:(int)uid;
 
-+ (NSString *)isMyselfStr:(NSString *)uid;
++ (NSDictionary *)isMyselfStr:(NSString *)uid;
 
 + (BOOL)isAvailableUid:(int)uid;
 

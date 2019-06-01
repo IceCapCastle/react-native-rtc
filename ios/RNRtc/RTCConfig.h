@@ -6,3 +6,7 @@
 #define VIDEO_HEIGHT_CAPTURE_DEFAULT 480
 // 默认userId
 #define UID_DEFAULT -1
+
+// 常量
+#define KEY_UID @"uid"
+#define KEY_IS_MYSELF @"isMyself"
