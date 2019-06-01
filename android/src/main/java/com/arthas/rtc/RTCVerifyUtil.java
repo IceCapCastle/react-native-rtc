@@ -1,5 +1,7 @@
 package com.arthas.rtc;
 
+import android.text.TextUtils;
+
 public class RTCVerifyUtil {
 
     public static boolean isMyself(int uid) {
@@ -7,7 +9,11 @@ public class RTCVerifyUtil {
     }
 
     public static boolean isMyself(String uid) {
-        return RTCBaseModule.getmUidStr().equals(uid);
+        if (!TextUtils.isEmpty(uid)) {
+            uid = uid.split("_")[0];
+            return RTCBaseModule.getmUidStr().equals(uid);
+        }
+        return false;
     }
 
     public static boolean isAvailableUid(int uid) {

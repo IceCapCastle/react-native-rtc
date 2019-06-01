@@ -10,7 +10,11 @@
 }
 
 + (BOOL)isMyselfStr:(NSString *)uid {
-    return [[RTCBaseBridge mUidStr] isEqualToString:uid];
+    if (uid && uid.length > 0) {
+        uid = [uid componentsSeparatedByString:@"_"].firstObject;
+        return [[RTCBaseBridge mUidStr] isEqualToString:uid];
+    }
+    return NO;
 }
 
 + (BOOL)isAvailableUid:(int)uid {

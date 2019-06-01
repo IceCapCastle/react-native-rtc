@@ -6,12 +6,12 @@ repositories {
   }
 }
 
-compile 'com.arthas.rtc:react-native-rtc:1.0.11'
+compile 'com.arthas.rtc:react-native-rtc:1.0.12'
 ```
 
 ###iOS 配置
 ```
-pod 'react-native-rtc', '1.0.11'
+pod 'react-native-rtc', '1.0.12'
 
 Header Search Paths $(SRCROOT)/../../../ios/Pods/Headers recursive
 ```
