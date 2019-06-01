@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "react-native-rtc"
-    s.version      = "1.0.12"
+    s.version      = "1.0.12.1"
     s.platform     = :ios, "8.0"
     s.summary      = "react-native-rtc"
     s.homepage     = "https://github.com/arthasAndDk/react-native-rtc"

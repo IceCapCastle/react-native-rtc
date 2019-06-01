@@ -8,12 +8,15 @@ public class RTCVerifyUtil {
         return RTCBaseModule.getmUid() == uid;
     }
 
-    public static boolean isMyself(String uid) {
+    public static String isMyselfStr(String uid) {
         if (!TextUtils.isEmpty(uid)) {
             uid = uid.split("_")[0];
-            return RTCBaseModule.getmUidStr().equals(uid);
+            if (RTCBaseModule.getmUidStr().equals(uid)) {
+                return uid;
+            }
+            return "";
         }
-        return false;
+        return null;
     }
 
     public static boolean isAvailableUid(int uid) {
