@@ -1,3 +1,8 @@
+#define LOG_LEVEL_DEF ddLogLevel
+#import <CocoaLumberjack/CocoaLumberjack.h>
+
+static const DDLogLevel ddLogLevel = DDLogLevelAll;
+
 #import "RTCStreamInfo.h"
 
 typedef NSString *STREAM_TYPE NS_STRING_ENUM;
@@ -134,7 +139,9 @@ static STREAM_TYPE const ALL = @"all";
 
 - (NSDictionary *)constantsToExport;
 
-- (void)log:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
++ (void)log:(NSString *)tag :(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
+
+- (void)logD:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 - (void)reset;
 

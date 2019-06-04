@@ -47,7 +47,7 @@ export const Events = {
   EVENT_VIDEOSIZE: 'VideoSize',  // 视频尺寸
   EVENT_SOUNDLEVEL: 'SoundLevel',  // 音量
   EVENT_USERMUTEVIDEO: 'UserMuteVideo',  // 用户禁用视频
-  EVENT_USERMUTEAUDIO: 'UserMuteAudio', // 用户禁用音频
+  EVENT_USERMUTEAUDIO: 'UserMuteAudio' // 用户禁用音频
 }
 
 export const Configs = {
@@ -59,4 +59,6 @@ export const Configs = {
   VIDEO_HEIGHT_CAPTURE_DEFAULT: 480,
   // 默认userId
   UID_DEFAULT: -1,
+  // 日志目录
+  LOG_PATH: 'RtcBaseLogs'
 }

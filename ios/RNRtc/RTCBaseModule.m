@@ -12,6 +12,13 @@ static NSMutableArray<RTCStreamInfo *> *users;
 + (void)initialize {
     mUid = UID_DEFAULT;
     users = [NSMutableArray new];
+    
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    
+    DDLogFileManagerDefault *manager = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:[RTCLogUtil getLogRootPath:NSDocumentDirectory :@"RtcBaseLogs"]];
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:manager];
+    [DDLog addLogger:fileLogger];
 }
 
 + (instancetype)bridgeWithDelegate:(id<RTCBaseModule>)delegate {
@@ -47,18 +54,52 @@ static NSMutableArray<RTCStreamInfo *> *users;
 /**
  * 打印日志
  */
-- (void)log:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
++ (void)log:(NSString *)tag :(NSString *)format, ... NS_FORMAT_FUNCTION(2,3) {
     va_list args;
     va_start(args, format);
     NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
-    NSLog(@"%@ %@", [self.delegate getName], str);
+    DDLogDebug(@"%@ %@", tag, str);
+}
+
+- (void)logD:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+    va_list args;
+    va_start(args, format);
+    NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    DDLogDebug(@"%@ %@", [self.delegate getName], str);
+}
+
+- (void)logI:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+    va_list args;
+    va_start(args, format);
+    NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    DDLogInfo(@"%@ %@", [self.delegate getName], str);
+}
+
+- (void)logW:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+    va_list args;
+    va_start(args, format);
+    NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    DDLogWarn(@"%@ %@", [self.delegate getName], str);
+}
+
+- (void)logE:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+    va_list args;
+    va_start(args, format);
+    NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    DDLogError(@"%@ %@", [self.delegate getName], str);
 }
 
 /**
  * 重置
  */
 - (void)reset {
+    [self logD:@"reset"];
+    
     self.delegate.mRoomId = nil; // 重置房间号
     [users removeAllObjects]; // 重置用户
 }
@@ -80,7 +121,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 - (void)addRemoteUser:(RTCStreamInfo *)stream {
     NSString *uid = stream.userID;
     NSString *sid = stream.streamID;
-    [self log:@"addRemoteUser uid %@ sid %@", uid, sid];
+    [self logD:@"addRemoteUser uid %@ sid %@", uid, sid];
     
     RTCStreamInfo *user = [RTCStreamInfo getUserByUid:uid];
     if (user) { // 用户存在
@@ -101,7 +142,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 - (void)removeRemoteUser:(RTCStreamInfo *)stream {
     NSString *uid = stream.userID;
     NSString *sid = stream.streamID;
-    [self log:@"removeRemoteUser uid %@ sid %@", uid, sid];
+    [self logD:@"removeRemoteUser uid %@ sid %@", uid, sid];
     
     RTCStreamInfo *user = [RTCStreamInfo getUserByUid:uid];
     if (user) {
@@ -110,13 +151,13 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onDisConnect {
-    [self log:EVENT_DISCONNECT];
+    [self logI:EVENT_DISCONNECT];
     
     [self.delegate sendEvent:EVENT_DISCONNECT params:nil];
 }
 
 - (void)onReconnect:(NSString *)roomId {
-    [self log:@"%@ roomId %@", EVENT_RECONNECT, roomId];
+    [self logI:@"%@ roomId %@", EVENT_RECONNECT, roomId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"roomId"] = roomId;
@@ -124,7 +165,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onConnectState:(int)state :(NSNumber *)reason {
-    [self log:@"%@ state %d reason %@", EVENT_CONNECTSTATE, state, reason];
+    [self logI:@"%@ state %d reason %@", EVENT_CONNECTSTATE, state, reason];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"state"] = @(state);
@@ -133,7 +174,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onJoinRoom:(NSString *)roomId :(int)userId {
-    [self log:@"%@ roomId %@ userId %d", EVENT_JOINROOM, roomId, userId];
+    [self logI:@"%@ roomId %@ userId %d", EVENT_JOINROOM, roomId, userId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"roomId"] = roomId;
@@ -142,7 +183,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onLeaveRoom:(NSString *)roomId {
-    [self log:@"%@ roomId %@", EVENT_LEAVEROOM, roomId];
+    [self logI:@"%@ roomId %@", EVENT_LEAVEROOM, roomId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"roomId"] = roomId;
@@ -150,7 +191,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onUserJoin:(int)userId {
-    [self log:@"%@ userId %d", EVENT_USERJOIN, userId];
+    [self logI:@"%@ userId %d", EVENT_USERJOIN, userId];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -158,7 +199,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onUserLeave:(int)userId :(NSNumber *)reason {
-    [self log:@"%@ userId %d reason %@", EVENT_USERLEAVE, userId, reason];
+    [self logI:@"%@ userId %d reason %@", EVENT_USERLEAVE, userId, reason];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -167,7 +208,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onWarning:(NSString *)type :(int)code :(NSString *)message {
-    [self log:@"%@ type %@ code %d message %@", EVENT_WARNING, type, code, message];
+    [self logW:@"%@ type %@ code %d message %@", EVENT_WARNING, type, code, message];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     if (type) dic[@"type"] = type;
@@ -177,7 +218,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onError:(NSString *)type :(int)code :(NSString *)message {
-    [self log:@"%@ type %@ code %d message %@", EVENT_ERROR, type, code, message];
+    [self logE:@"%@ type %@ code %d message %@", EVENT_ERROR, type, code, message];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     if (type) dic[@"type"] = type;
@@ -187,7 +228,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onStreamUpdate:(int)userId :(BOOL)isAdd :(STREAM_TYPE)type {
-    [self log:@"%@ userId %d isAdd %d streamType %@", EVENT_STREAMUPDATE, userId, isAdd, type];
+    [self logI:@"%@ userId %d isAdd %d streamType %@", EVENT_STREAMUPDATE, userId, isAdd, type];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -197,7 +238,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onRemoteVideoState:(int)userId :(int)state {
-    [self log:@"%@ userId %d state %d", EVENT_REMOTEVIDEOSTATE, userId, state];
+    [self logI:@"%@ userId %d state %d", EVENT_REMOTEVIDEOSTATE, userId, state];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -206,7 +247,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onVideoSize:(int)userId :(int)width :(int)height :(NSNumber *)rotation {
-    [self log:@"%@ userId %d width %d height %d rotation %@", EVENT_VIDEOSIZE, userId, width, height, rotation];
+    [self logI:@"%@ userId %d width %d height %d rotation %@", EVENT_VIDEOSIZE, userId, width, height, rotation];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -217,7 +258,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onSoundLevel:(int)userId :(int)volume {
-    [self log:@"%@ userId %d volume %d", EVENT_SOUNDLEVEL, userId, volume];
+    [self logI:@"%@ userId %d volume %d", EVENT_SOUNDLEVEL, userId, volume];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -226,7 +267,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onUserMuteVideo:(int)userId :(BOOL)muted {
-    [self log:@"%@ userId %d muted %d", EVENT_USERMUTEVIDEO, userId, muted];
+    [self logI:@"%@ userId %d muted %d", EVENT_USERMUTEVIDEO, userId, muted];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);
@@ -235,7 +276,7 @@ static NSMutableArray<RTCStreamInfo *> *users;
 }
 
 - (void)onUserMuteAudio:(int)userId :(BOOL)muted {
-    [self log:@"%@ userId %d muted %d", EVENT_USERMUTEAUDIO, userId, muted];
+    [self logI:@"%@ userId %d muted %d", EVENT_USERMUTEAUDIO, userId, muted];
     
     NSMutableDictionary<NSString *, id> *dic = [NSMutableDictionary new];
     dic[@"userId"] = @(userId);

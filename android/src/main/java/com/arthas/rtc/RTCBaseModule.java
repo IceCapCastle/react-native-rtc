@@ -1,15 +1,22 @@
 package com.arthas.rtc;
 
 import android.content.Context;
+import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.XLog;
+import com.elvishew.xlog.flattener.ClassicFlattener;
+import com.elvishew.xlog.printer.AndroidPrinter;
+import com.elvishew.xlog.printer.file.FilePrinter;
+import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.WritableMap;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +68,18 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
         }
     }
 
+    static {
+        File file = new File(Environment.getExternalStorageDirectory(), "RtcBaseLogs");
+        XLog.init(
+                LogLevel.ALL,
+                new AndroidPrinter(),
+                new FilePrinter.Builder(file.getAbsolutePath())
+                        .fileNameGenerator(new DateFileNameGenerator())
+                        .flattener(new ClassicFlattener())
+                        .build()
+        );
+    }
+
     public RTCBaseModule(ReactApplicationContext reactContext) {
         super(reactContext);
         mContext = reactContext;
@@ -93,20 +112,24 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     /**
      * 打印日志
      */
+    public static void log(String tag, String format, Object... args) {
+        XLog.tag(tag).d(format, args);
+    }
+
     protected void logD(String format, Object... args) {
-        Log.d(getName(), String.format(format, args));
+        XLog.tag(getName()).d(format, args);
     }
 
     private void logI(String format, Object... args) {
-        Log.i(getName(), String.format(format, args));
+        XLog.tag(getName()).i(format, args);
     }
 
     private void logW(String format, Object... args) {
-        Log.w(getName(), String.format(format, args));
+        XLog.tag(getName()).w(format, args);
     }
 
     private void logE(String format, Object... args) {
-        Log.e(getName(), String.format(format, args));
+        XLog.tag(getName()).e(format, args);
     }
 
     /**
