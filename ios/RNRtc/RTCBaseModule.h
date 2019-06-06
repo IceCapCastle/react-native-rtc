@@ -17,7 +17,8 @@ static STREAM_TYPE const ALL = @"all";
 
 @property (strong, nonatomic) RTCBaseBridge *rtcBridge;
 @property (copy, nonatomic) NSString *mRoomId; // 房间号
-@property (assign, nonatomic) BOOL mMuteLocal; // 是否屏蔽本地
+@property (assign, nonatomic) BOOL mMuteLocalAudio; // 是否屏蔽本地音频
+@property (assign, nonatomic) BOOL mMuteLocalVideo; // 是否屏蔽本地视频
 @property (assign, nonatomic) BOOL mAudioEnable; // 是否开启音频
 @property (assign, nonatomic) BOOL mVideoEnable; // 是否开启视频
 
@@ -55,18 +56,21 @@ static STREAM_TYPE const ALL = @"all";
 /**
  * 加入房间
  *
- * @param token  签名
- * @param roomId 房间号
- * @param userId 用户id
+ * @param token          签名
+ * @param roomId         房间号
+ * @param userId         用户id
+ * @param muteLocalVideo 是否屏蔽本地音频
+ * @param muteLocalAudio 是否屏蔽本地视频
  */
-- (void)join:(NSString *)token :(NSString *)roomId :(int)userId resolver:(id)resolve rejecter:(id)reject;
+- (void)join:(NSString *)token :(NSString *)roomId :(int)userId :(BOOL)muteLocalAudio :(BOOL)muteLocalVideo resolver:(id)resolve rejecter:(id)reject;
 
 /**
  * 设置是否屏蔽本地音视频流
  *
- * @param muteLocal 是否屏蔽本地
+ * @param muteLocalAudio 是否屏蔽本地音频
+ * @param muteLocalVideo 是否屏蔽本地视频
  */
-- (void)setMuteLocal:(BOOL)muteLocal;
+- (void)setMuteLocal:(BOOL)muteLocalAudio :(BOOL)muteLocalVideo;
 
 /**
  * 设置是否开启音频

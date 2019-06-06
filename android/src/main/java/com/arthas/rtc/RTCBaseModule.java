@@ -54,7 +54,8 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
 
     protected Context mContext; // 上下文
     protected String mRoomId; // 房间号
-    protected boolean mMuteLocal = false; // 是否屏蔽本地
+    protected boolean mMuteLocalAudio = false; // 是否屏蔽本地音频
+    protected boolean mMuteLocalVideo = false; // 是否屏蔽本地视频
     protected boolean mAudioEnable = true; // 是否开启音频
     protected boolean mVideoEnable = true; // 是否开启视频
 
@@ -155,18 +156,21 @@ public abstract class RTCBaseModule extends ReactContextBaseJavaModule {
     /**
      * 加入房间
      *
-     * @param token  签名
-     * @param roomId 房间号
-     * @param userId 用户id
+     * @param token          签名
+     * @param roomId         房间号
+     * @param userId         用户id
+     * @param muteLocalVideo 是否屏蔽本地音频
+     * @param muteLocalAudio 是否屏蔽本地视频
      */
-    public abstract void join(String token, String roomId, int userId, Promise promise);
+    public abstract void join(String token, String roomId, int userId, boolean muteLocalAudio, boolean muteLocalVideo, Promise promise);
 
     /**
      * 设置是否屏蔽本地音视频流
      *
-     * @param muteLocal 是否屏蔽本地
+     * @param muteLocalAudio 是否屏蔽本地音频
+     * @param muteLocalVideo 是否屏蔽本地视频
      */
-    public abstract void setMuteLocal(boolean muteLocal);
+    public abstract void setMuteLocal(boolean muteLocalAudio, boolean muteLocalVideo);
 
     /**
      * 设置是否开启音频
